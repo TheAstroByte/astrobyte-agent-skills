@@ -54,6 +54,8 @@ def validate_package(package: Path, metadata: dict[str, Any]) -> list[str]:
             errors.append(f"{package.name}/{origin.relative_to(package)}: missing resource: {raw}")
 
     resources = metadata.get("runtime_resources", [])
+    if metadata.get("source"):
+        check("LICENSES.txt", package / "SKILL.md")
     if not isinstance(resources, list) or any(not isinstance(item, str) for item in resources):
         errors.append(f"{package.name}: invalid runtime_resources")
     else:

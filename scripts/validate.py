@@ -13,6 +13,7 @@ try:
     from scripts.portable_profile import validate_resources
     from scripts.preferences import validate_preferences
     from scripts.packages import validate_dependencies, validate_package
+    from scripts.package_licenses import validate_licenses
     from scripts.routing import TEMPLATE_RELATIVE, validate_template_text
 except ModuleNotFoundError:  # Direct execution from scripts/validate.py.
     from routing import TEMPLATE_RELATIVE, validate_template_text  # type: ignore[no-redef]
@@ -20,6 +21,7 @@ except ModuleNotFoundError:  # Direct execution from scripts/validate.py.
     from portable_profile import validate_resources  # type: ignore[no-redef]
     from preferences import validate_preferences
     from packages import validate_dependencies, validate_package
+    from package_licenses import validate_licenses
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -195,6 +197,7 @@ def validate_repository(root: Path = REPO_ROOT) -> list[str]:
             errors.append(f"templates/{template}: {exc}")
 
     errors.extend(validate_resources(root))
+    errors.extend(validate_licenses(root))
     try:
         validate_preferences(load_object(root / "templates/preferences.json"))
     except (OSError, ValueError) as exc:
