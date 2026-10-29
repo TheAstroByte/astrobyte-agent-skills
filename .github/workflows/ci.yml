@@ -8,15 +8,75 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   validate:
-    runs-on: ubuntu-latest
+    name: Validate (${{ matrix.os }}, Python ${{ matrix.python }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            python: "3.12"
+          - os: macos-latest
+            python: "3.12"
+          - os: ubuntu-latest
+            python: "3.13"
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          python-version: "3.12"
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: ${{ matrix.python }}
       - name: Validate skill packages
         run: python3 scripts/validate.py
       - name: Run tests
         run: python3 -m unittest discover -s tests -v
+
+  secrets:
+    name: Scan secrets
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Scan complete checked-out history
+        shell: bash
+        env:
+          GITLEAKS_VERSION: "8.30.1"
+          # Official release checksum for the Linux x64 archive.
+          GITLEAKS_SHA256: "551f6fc83ea457d62a0d98237cbad105af8d557003051f41f3e7ca7b3f2470eb"
+        run: |
+          scanner_dir=$(mktemp -d)
+          trap 'rm -rf "$scanner_dir"' EXIT
+          curl --fail --silent --show-error --location --retry 3 --max-time 60 \
+            "https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}/gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz" \
+            --output "$scanner_dir/gitleaks.tar.gz"
+          printf '%s  %s\n' "$GITLEAKS_SHA256" "$scanner_dir/gitleaks.tar.gz" | sha256sum --check --status
+          tar -xzf "$scanner_dir/gitleaks.tar.gz" -C "$scanner_dir" gitleaks
+          "$scanner_dir/gitleaks" git . --redact --no-banner --log-opts=--all
+
+  required:
+    name: Required CI
+    if: ${{ always() }}
+    needs: [validate, secrets]
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      # https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax#jobsjob_idneeds
+      - name: Require every check to succeed
+        shell: bash
+        env:
+          VALIDATE_RESULT: ${{ needs.validate.result }}
+          SECRETS_RESULT: ${{ needs.secrets.result }}
+        run: |
+          test "$VALIDATE_RESULT" = success
+          test "$SECRETS_RESULT" = success
