@@ -80,6 +80,10 @@ The manifest records a routing mode that later runs respect:
 
 Backups live under `~/.config/astrobyte-agent-skills/backups/<timestamp>/` unless `ASTROBYTE_CONFIG_HOME` points elsewhere.
 
+Skill replacements are copied into a temporary sibling directory, including any exported preferences, and checked against the previewed package hash before the installed copy moves. A copy or hash failure leaves that installed skill intact. A caught promotion failure restores its prior copy from backup; if restoration fails, the error identifies the backup to inspect.
+
+An installation containing several changes is not one transaction. Earlier completed changes may remain after a later failure, and abrupt process termination may require manual recovery from backups. Package replacement errors report the backup directory; run `--check` before retrying. Temporary staging directories are removed on normal completion and caught failures.
+
 ## Check
 
 `--check` reports:

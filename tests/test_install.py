@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import os
+import shutil
 import tempfile
 import unittest
 from pathlib import Path
@@ -187,6 +188,92 @@ class InstallTests(unittest.TestCase):
         backed_up_mode = [Path(path) for path in backups if path.endswith("astrobyte-mode")]
         self.assertEqual(len(backed_up_mode), 1)
         self.assertIn("local edit", (backed_up_mode[0] / "SKILL.md").read_text(encoding="utf-8"))
+
+    def prepare_replacement(self):
+        answers = install.validate_answers({**self.answers, "selected_skills": ["unslop"]}, self.catalog)
+        install.apply_plan(answers, install.build_plan(answers, self.home, self.catalog), self.home)
+        target = self.home / ".agents/skills/unslop"
+        document = target / "SKILL.md"
+        document.write_text(document.read_text(encoding="utf-8") + "\nLocal guidance\n", encoding="utf-8")
+        previous_hash = install.tree_hash(target)
+        state = {name: (self.state / name).read_bytes() for name in ("config.json", "install-manifest.json")}
+        return answers, install.build_plan(answers, self.home, self.catalog), target, previous_hash, state
+
+    def test_partial_copy_failure_preserves_installed_skill_and_state(self) -> None:
+        answers, plan, target, previous_hash, state = self.prepare_replacement()
+
+        def partial_copy(source, destination):
+            Path(destination).mkdir()
+            (Path(destination) / "partial.txt").write_text("incomplete", encoding="utf-8")
+            raise OSError("copy failure")
+
+        with patch.object(install.shutil, "copytree", side_effect=partial_copy):
+            with self.assertRaisesRegex(OSError, "copy failure"):
+                install.apply_plan(answers, plan, self.home)
+
+        self.assertEqual(install.tree_hash(target), previous_hash)
+        self.assertEqual(list(target.parent.iterdir()), [target])
+        for name, content in state.items():
+            self.assertEqual((self.state / name).read_bytes(), content)
+
+    def test_damaged_staging_copy_is_rejected_before_replacement(self) -> None:
+        answers, plan, target, previous_hash, _ = self.prepare_replacement()
+        copytree = shutil.copytree
+
+        def damaged_copy(source, destination):
+            copytree(source, destination)
+            (Path(destination) / "LICENSES.txt").unlink()
+
+        with patch.object(install.shutil, "copytree", side_effect=damaged_copy):
+            with self.assertRaisesRegex(ValueError, "Staged package hash"):
+                install.apply_plan(answers, plan, self.home)
+
+        self.assertEqual(install.tree_hash(target), previous_hash)
+        self.assertEqual(list(target.parent.iterdir()), [target])
+
+    def test_failed_promotion_restores_installed_skill_and_state(self) -> None:
+        answers, plan, target, previous_hash, state = self.prepare_replacement()
+        rename = Path.rename
+
+        def failed_promotion(path, destination):
+            if path.name == "package" and Path(destination) == target:
+                raise OSError("promotion failure")
+            return rename(path, destination)
+
+        with patch.object(Path, "rename", new=failed_promotion):
+            with self.assertRaisesRegex(OSError, "promotion failure"):
+                install.apply_plan(answers, plan, self.home)
+
+        self.assertEqual(install.tree_hash(target), previous_hash)
+        self.assertEqual(list(target.parent.iterdir()), [target])
+        for name, content in state.items():
+            self.assertEqual((self.state / name).read_bytes(), content)
+
+    def test_failed_restoration_keeps_backup_and_reports_its_path(self) -> None:
+        answers, plan, target, previous_hash, state = self.prepare_replacement()
+        rename, move = Path.rename, shutil.move
+
+        def failed_promotion(path, destination):
+            if path.name == "package" and Path(destination) == target:
+                raise OSError("promotion failure")
+            return rename(path, destination)
+
+        def failed_restoration(source, destination):
+            if Path(destination) == target:
+                raise OSError("restoration failure")
+            return move(source, destination)
+
+        with patch.object(Path, "rename", new=failed_promotion), patch.object(install.shutil, "move", side_effect=failed_restoration):
+            with self.assertRaisesRegex(OSError, "Recovery failed") as caught:
+                install.apply_plan(answers, plan, self.home)
+
+        backups = list((self.state / "backups").rglob("unslop/SKILL.md"))
+        self.assertEqual(len(backups), 1)
+        backup = backups[0].parent
+        self.assertEqual(install.tree_hash(backup), previous_hash)
+        self.assertIn(str(backup), str(caught.exception))
+        for name, content in state.items():
+            self.assertEqual((self.state / name).read_bytes(), content)
 
     def test_primary_harness_must_be_selected(self) -> None:
         invalid = dict(self.answers)
