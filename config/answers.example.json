@@ -1,0 +1,49 @@
+{
+  "operator_handle": "astrobyte",
+  "machine_alias": "primary-dev",
+  "delivery_mode": "durable",
+  "production_capable": false,
+  "autonomy_preset": "bounded-autonomy",
+  "communication_style": "collaborative-challenge",
+  "explanation_level": "collaborative",
+  "git_identity": {
+    "mode": "dual-attribution",
+    "human": {
+      "name": "Example Operator",
+      "email": "operator@example.com"
+    },
+    "trailer_key": "Agent",
+    "verify_before_push": true,
+    "agents": {
+      "codex": {
+        "name": "Codex",
+        "email": "codex@local.invalid"
+      },
+      "opencode": {
+        "name": "OpenCode",
+        "email": "opencode@local.invalid"
+      }
+    }
+  },
+  "harnesses": [
+    "codex",
+    "opencode"
+  ],
+  "primary_harness": "codex",
+  "profile": "full",
+  "optional_skills": [],
+  "model_environment": "mixed",
+  "max_parallel_workers": 3,
+  "unattended_runs": false,
+  "external_actions": "ask",
+  "unattended_external_actions": "ask",
+  "git_workflow": "branch",
+  "issue_tracker": "local",
+  "docs_path": "docs",
+  "compute": "mixed",
+  "experiment_budget": "confirm before expensive or open-ended runs",
+  "browser_automation": true,
+  "containers": true,
+  "archive_duplicates": true,
+  "archive_superseded": true
+}

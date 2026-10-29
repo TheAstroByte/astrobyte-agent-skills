@@ -1,0 +1,6 @@
+interface:
+  display_name: "Astrobyte Architect"
+  short_description: "Settle data shapes and module seams first"
+  default_prompt: "Use $astrobyte-architect to design the data shapes, interfaces, and module boundaries before implementation."
+policy:
+  allow_implicit_invocation: false

@@ -1,0 +1,55 @@
+{
+  "baseline": {
+    "content_sha256": "28f949dc60b6280520722f8a2c1cbca25ae4fc2db3130872d80a0968b299a2ac",
+    "handle": "astrobyte",
+    "repository_version": "0.5.0",
+    "source_agreement": "profiles/astrobyte/working-agreement.md",
+    "source_profile": "profiles/astrobyte/profile.json"
+  },
+  "defaults": {
+    "autonomy_preset": "bounded-autonomy",
+    "ci_validation": true,
+    "communication_style": "collaborative-challenge",
+    "delivery_mode": "durable",
+    "explanation_level": "collaborative",
+    "git_workflow": "worktree",
+    "issue_tracker": "github",
+    "skill_update_policy": "manual-reviewed"
+  },
+  "git_identity": {
+    "agents": {
+      "claude": {
+        "email": "claude-code@local.invalid",
+        "name": "Claude Code"
+      },
+      "codex": {
+        "email": "codex@local.invalid",
+        "name": "Codex"
+      },
+      "cursor": {
+        "email": "cursor@local.invalid",
+        "name": "Cursor"
+      },
+      "hermes": {
+        "email": "hermes@local.invalid",
+        "name": "Hermes"
+      },
+      "opencode": {
+        "email": "opencode@local.invalid",
+        "name": "OpenCode"
+      }
+    },
+    "human_identity_source": "machine",
+    "mode": "dual-attribution",
+    "trailer_key": "Agent",
+    "verify_before_push": true
+  },
+  "profile": "full",
+  "schema_version": 1,
+  "skills": {
+    "require_independent_feedback": true,
+    "required": [
+      "unslop"
+    ]
+  }
+}

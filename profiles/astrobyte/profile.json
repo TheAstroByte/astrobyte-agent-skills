@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "handle": "astrobyte",
+  "display_name": "Astrobyte",
+  "identity_mode": "handle",
+  "repository_name": "astrobyte-agent-skills",
+  "skill_profile": "full",
+  "working_agreement": "working-agreement.md",
+  "machine_registry": "machines.json",
+  "defaults": {
+    "autonomy_preset": "bounded-autonomy",
+    "communication_style": "collaborative-challenge",
+    "explanation_level": "collaborative",
+    "delivery_mode": "durable",
+    "machine_delivery_policy": "ask-every-install",
+    "git_workflow": "worktree",
+    "issue_tracker": "github",
+    "skill_update_policy": "manual-reviewed",
+    "ci_validation": true
+  },
+  "skills": {
+    "required": [
+      "unslop"
+    ],
+    "allow_discovery": true,
+    "preferred_sources": [
+      "mattpocock/skills",
+      "cursor/plugins:pstack"
+    ],
+    "require_independent_feedback": true
+  },
+  "repository": {
+    "visibility": "private",
+    "publication": "independent-copy",
+    "initial_change": "pull-request",
+    "upstream_remote": "upstream",
+    "retain_upstream_skill_names": true,
+    "collaborator_access": "ask"
+  },
+  "git_identity": {
+    "mode": "dual-attribution",
+    "human_identity_source": "machine",
+    "trailer_key": "Agent",
+    "verify_before_push": true,
+    "agents": {
+      "codex": {
+        "name": "Codex",
+        "email": "codex@local.invalid"
+      },
+      "opencode": {
+        "name": "OpenCode",
+        "email": "opencode@local.invalid"
+      },
+      "cursor": {
+        "name": "Cursor",
+        "email": "cursor@local.invalid"
+      },
+      "claude": {
+        "name": "Claude Code",
+        "email": "claude-code@local.invalid"
+      },
+      "hermes": {
+        "name": "Hermes",
+        "email": "hermes@local.invalid"
+      }
+    }
+  },
+  "machine_policy": {
+    "synchronize_registry": false,
+    "require_production_capable": false
+  },
+  "migration": {
+    "enabled_by_default": true,
+    "may_skip_with_reason": true
+  },
+  "calibration": {
+    "recommended": true,
+    "optional": true
+  }
+}

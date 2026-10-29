@@ -1,0 +1,6 @@
+---
+description: Route the explicit skill-stack adoption command
+alwaysApply: true
+---
+
+When the user says "Adopt this skill stack" or invokes `/adopt-skill-stack`, read `skills/adopt-skill-stack/SKILL.md` and follow it before installation. A clone does not authorize persistent changes.

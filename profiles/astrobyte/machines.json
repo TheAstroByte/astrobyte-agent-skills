@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "machines": [
+    {
+      "alias": "primary-dev",
+      "default_delivery_mode": "durable",
+      "production_capable": false,
+      "allowed_delivery_modes": [
+        "explore",
+        "prototype",
+        "durable",
+        "production"
+      ],
+      "capabilities": [],
+      "setup_status": "pending"
+    }
+  ]
+}

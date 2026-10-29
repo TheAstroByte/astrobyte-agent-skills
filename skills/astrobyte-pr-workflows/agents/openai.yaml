@@ -1,0 +1,6 @@
+interface:
+  display_name: "Astrobyte PR Workflows"
+  short_description: "Explicit PR completion and review commands"
+  default_prompt: "Use $astrobyte-pr-workflows to finish this task with the PR left unmerged."
+policy:
+  allow_implicit_invocation: false

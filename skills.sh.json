@@ -1,0 +1,21 @@
+{
+  "$schema": "https://skills.sh/schemas/skills.sh.schema.json",
+  "groupings": [
+    {
+      "title": "Astrobyte workflow",
+      "skills": ["astrobyte-mode", "astrobyte-project-startup", "setup-astrobyte-skills", "astrobyte-architect", "astrobyte-tdd", "astrobyte-verify-project", "astrobyte-show-work", "astrobyte-review", "astrobyte-recall"]
+    },
+    {
+      "title": "Research and design",
+      "skills": ["grilling", "domain-modeling", "codebase-design", "diagnosing-bugs", "prototype", "research", "handoff", "to-questionnaire", "writing-for-agents"]
+    },
+    {
+      "title": "Engineering specialists",
+      "skills": ["unslop", "blast-radius", "technical-writing", "typescript-best-practices", "api-and-interface-design", "frontend-ui-engineering", "browser-testing-with-devtools", "security-and-hardening", "source-driven-development"]
+    },
+    {
+      "title": "Optional media",
+      "skills": ["davinci-resolve-reel-editing"]
+    }
+  ]
+}

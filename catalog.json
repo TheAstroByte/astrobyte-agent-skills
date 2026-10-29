@@ -1,0 +1,324 @@
+{
+  "schema_version": 1,
+  "repository_version": "0.5.0",
+  "sources": {
+    "astrobyte": {
+      "repository": "TheAstroByte/astrobyte-agent-skills",
+      "version": "0.5.0"
+    },
+    "mattpocock": {
+      "repository": "mattpocock/skills",
+      "commit": "9c9f36ccd3995266cd675468af71639c8dde1ec5"
+    },
+    "pstack": {
+      "repository": "cursor/plugins",
+      "path": "pstack",
+      "commit": "60c641e4fad674784b30abcf9f8915dea39df38d"
+    },
+    "addyosmani": {
+      "repository": "addyosmani/agent-skills",
+      "commit": "df1edb2e05487d0aa6d93c747141e0aed1187f25"
+    },
+    "anthropics": {
+      "repository": "anthropics/skills",
+      "commit": "dbd4588f9e1033efb41dad4bef2f7947c8993d44"
+    },
+    "tstack": {
+      "repository": "t3dotgg/tstack",
+      "commit": "7de017b3fc9d50c03cf3ecb98fb71e0ca65a78bd"
+    }
+  },
+  "required_skills": [
+    "unslop"
+  ],
+  "profiles": {
+    "core": [
+      "astrobyte-mode",
+      "astrobyte-project-startup",
+      "astrobyte-git-identity",
+      "adopt-skill-stack",
+      "update-skill-stack",
+      "setup-astrobyte-skills",
+      "astrobyte-tdd",
+      "continual-improvement-check",
+      "pr-feedback-loop",
+      "hermetic-test-suites",
+      "astrobyte-architect",
+      "astrobyte-verify-project",
+      "astrobyte-show-work",
+      "astrobyte-review",
+      "astrobyte-recall",
+      "grilling",
+      "domain-modeling",
+      "codebase-design",
+      "diagnosing-bugs",
+      "prototype",
+      "research",
+      "handoff",
+      "writing-for-agents",
+      "unslop",
+      "blast-radius"
+    ],
+    "builder": [
+      "astrobyte-mode",
+      "astrobyte-project-startup",
+      "astrobyte-git-identity",
+      "adopt-skill-stack",
+      "update-skill-stack",
+      "setup-astrobyte-skills",
+      "astrobyte-tdd",
+      "continual-improvement-check",
+      "pr-feedback-loop",
+      "hermetic-test-suites",
+      "astrobyte-architect",
+      "astrobyte-verify-project",
+      "astrobyte-show-work",
+      "astrobyte-review",
+      "astrobyte-recall",
+      "grilling",
+      "domain-modeling",
+      "codebase-design",
+      "diagnosing-bugs",
+      "prototype",
+      "research",
+      "handoff",
+      "to-questionnaire",
+      "writing-for-agents",
+      "unslop",
+      "blast-radius",
+      "technical-writing",
+      "typescript-best-practices",
+      "api-and-interface-design",
+      "browser-testing-with-devtools",
+      "frontend-ui-engineering",
+      "frontend-design",
+      "security-and-hardening",
+      "source-driven-development"
+    ],
+    "full": [
+      "astrobyte-mode",
+      "astrobyte-project-startup",
+      "astrobyte-git-identity",
+      "adopt-skill-stack",
+      "update-skill-stack",
+      "setup-astrobyte-skills",
+      "astrobyte-tdd",
+      "continual-improvement-check",
+      "pr-feedback-loop",
+      "hermetic-test-suites",
+      "astrobyte-architect",
+      "astrobyte-verify-project",
+      "astrobyte-show-work",
+      "astrobyte-review",
+      "astrobyte-recall",
+      "grilling",
+      "domain-modeling",
+      "codebase-design",
+      "diagnosing-bugs",
+      "prototype",
+      "research",
+      "handoff",
+      "to-questionnaire",
+      "writing-for-agents",
+      "unslop",
+      "blast-radius",
+      "technical-writing",
+      "typescript-best-practices",
+      "api-and-interface-design",
+      "browser-testing-with-devtools",
+      "frontend-ui-engineering",
+      "frontend-design",
+      "security-and-hardening",
+      "source-driven-development",
+      "ci-cd-and-automation",
+      "deprecation-and-migration",
+      "observability-and-instrumentation",
+      "performance-optimization",
+      "shipping-and-launch"
+    ]
+  },
+  "superseded_skills": [
+    "code-review-and-quality",
+    "code-simplification",
+    "context-engineering",
+    "debugging-and-error-recovery",
+    "documentation-and-adrs",
+    "doubt-driven-development",
+    "idea-refine",
+    "incremental-implementation",
+    "interview-me",
+    "planning-and-task-breakdown",
+    "spec-driven-development",
+    "test-driven-development",
+    "using-agent-skills"
+  ],
+  "skills": {
+    "astrobyte-pr-workflows": {
+      "source": "astrobyte",
+      "tier": "optional",
+      "explicit_only": true,
+      "portable_preferences": true,
+      "derived_from": [
+        "tstack:full-stop",
+        "tstack:full-send",
+        "tstack:sol-loop",
+        "tstack:council",
+        "tstack:takeover",
+        "tstack:modernize",
+        "tstack:babysit-pr",
+        "tstack:file-pr",
+        "tstack:leaving-pr-comments"
+      ],
+      "dependencies": [
+        "astrobyte-mode",
+        "pr-feedback-loop",
+        "astrobyte-recall"
+      ],
+      "runtime_resources": [
+        "agents/openai.yaml",
+        "references/finish.md",
+        "references/sol-loop.md",
+        "references/council.md",
+        "references/continuation.md",
+        "references/pr-feedback.md",
+        "references/t3.md",
+        "scripts/workflow_state.py",
+        "LICENSE.tstack.txt"
+      ]
+    },
+    "astrobyte-mode": {
+      "source": "astrobyte",
+      "tier": "core",
+      "dependencies": [
+        "astrobyte-project-startup",
+        "astrobyte-architect",
+        "astrobyte-show-work",
+        "prototype",
+        "astrobyte-review",
+        "astrobyte-git-identity",
+        "unslop"
+      ],
+      "conditional_dependencies": [
+        {"skill": "frontend-design", "when": "Creating a user-facing interface or deliberately changing its visual design, including prototypes and design-only requests"},
+        {"skill": "frontend-ui-engineering", "when": "Implementing a new or visually redesigned user-facing interface"},
+        {"skill": "browser-testing-with-devtools", "when": "Verifying an implemented interface with an available Chrome DevTools MCP connection"}
+      ],
+      "runtime_resources": [
+        "references/baseline.json",
+        "references/working-agreement.md",
+        "scripts/runtime_config.py",
+        "scripts/preferences.py",
+        "references/research-and-ml.md",
+        "references/build-and-debug.md",
+        "references/operate-and-handoff.md",
+        "references/principles.md",
+        "references/harnesses.md",
+        "references/configuration.md",
+        "references/dependencies.md",
+        "references/frontend.md"
+      ]
+    },
+    "astrobyte-project-startup": {"source": "astrobyte", "tier": "core", "runtime_resources": ["references/project-defaults.json"]},
+    "astrobyte-git-identity": {
+      "source": "astrobyte",
+      "tier": "core",
+      "runtime_resources": [
+        "references/git-policy.json",
+        "scripts/git_agent_identity.py",
+        "scripts/preferences.py"
+      ]
+    },
+    "adopt-skill-stack": {"source": "astrobyte", "tier": "core", "explicit_only": true, "dependencies": ["unslop"], "requires_source_checkout": true},
+    "update-skill-stack": {"source": "astrobyte", "tier": "core", "explicit_only": true, "requires_source_checkout": true},
+    "setup-astrobyte-skills": {"source": "astrobyte", "tier": "core", "dependencies": ["adopt-skill-stack"], "explicit_only": true, "requires_source_checkout": true},
+    "astrobyte-tdd": {"source": "astrobyte", "tier": "core", "derived_from": ["mattpocock:tdd", "pstack:tdd"]},
+    "continual-improvement-check": {"source": "astrobyte", "tier": "core"},
+    "pr-feedback-loop": {"source": "astrobyte", "tier": "core"},
+    "hermetic-test-suites": {"source": "astrobyte", "tier": "core"},
+    "astrobyte-architect": {
+      "source": "astrobyte",
+      "tier": "core",
+      "derived_from": [
+        "pstack:architect",
+        "mattpocock:codebase-design"
+      ],
+      "dependencies": [
+        "codebase-design"
+      ],
+      "conditional_dependencies": [
+        {
+          "skill": "api-and-interface-design",
+          "when": "Designing a public HTTP or GraphQL contract"
+        }
+      ]
+    },
+    "astrobyte-verify-project": {"source": "astrobyte", "tier": "core", "derived_from": ["pstack:create-verification-skill", "pstack:maintain-verification-skill"]},
+    "astrobyte-show-work": {"source": "astrobyte", "tier": "core", "derived_from": ["pstack:show-me-your-work"]},
+    "astrobyte-review": {
+      "source": "astrobyte",
+      "tier": "core",
+      "derived_from": [
+        "pstack:interrogate",
+        "mattpocock:code-review"
+      ],
+      "runtime_resources": [
+        "references/review-policy.json",
+        "references/configuration.md",
+        "references/reviewer-dispatch.md",
+        "scripts/runtime_config.py",
+        "scripts/preferences.py"
+      ]
+    },
+    "astrobyte-recall": {"source": "astrobyte", "tier": "core", "derived_from": ["pstack:recall", "mattpocock:handoff"]},
+    "davinci-resolve-reel-editing": {"source": "astrobyte", "tier": "optional"},
+    "grilling": {"source": "mattpocock", "tier": "core"},
+    "domain-modeling": {"source": "mattpocock", "tier": "core"},
+    "codebase-design": {"source": "mattpocock", "tier": "core"},
+    "diagnosing-bugs": {"source": "mattpocock", "tier": "core"},
+    "prototype": {"source": "mattpocock", "tier": "core"},
+    "research": {"source": "mattpocock", "tier": "core"},
+    "handoff": {"source": "mattpocock", "tier": "core"},
+    "to-questionnaire": {"source": "mattpocock", "tier": "builder"},
+    "writing-for-agents": {"source": "mattpocock", "tier": "core"},
+    "unslop": {"source": "pstack", "tier": "core"},
+    "blast-radius": {"source": "pstack", "tier": "core", "dependencies": ["unslop"]},
+    "technical-writing": {"source": "pstack", "tier": "builder", "dependencies": ["unslop"]},
+    "typescript-best-practices": {"source": "pstack", "tier": "builder"},
+    "api-and-interface-design": {"source": "addyosmani", "tier": "builder"},
+    "browser-testing-with-devtools": {"source": "addyosmani", "tier": "builder"},
+    "ci-cd-and-automation": {"source": "addyosmani", "tier": "full"},
+    "deprecation-and-migration": {"source": "addyosmani", "tier": "full"},
+    "frontend-ui-engineering": {"source": "addyosmani", "tier": "builder"},
+    "frontend-design": {"source": "anthropics", "tier": "builder", "runtime_resources": ["LICENSE.txt"]},
+    "git-workflow-and-versioning": {
+      "source": "addyosmani",
+      "tier": "optional",
+      "suggestions": [
+        {
+          "skill": "api-and-interface-design",
+          "when": "Assessing whether a contract change breaks consumers"
+        }
+      ]
+    },
+    "observability-and-instrumentation": {"source": "addyosmani", "tier": "full"},
+    "performance-optimization": {"source": "addyosmani", "tier": "full"},
+    "security-and-hardening": {
+      "source": "addyosmani",
+      "tier": "builder",
+      "suggestions": [
+        {
+          "skill": "observability-and-instrumentation",
+          "when": "Applying the related telemetry privacy guidance"
+        }
+      ],
+      "conditional_dependencies": [
+        {
+          "skill": "diagnosing-bugs",
+          "when": "Investigating a privacy incident; replaces the legacy debugging-and-error-recovery reference"
+        }
+      ]
+    },
+    "shipping-and-launch": {"source": "addyosmani", "tier": "full"},
+    "source-driven-development": {"source": "addyosmani", "tier": "builder"}
+  }
+}

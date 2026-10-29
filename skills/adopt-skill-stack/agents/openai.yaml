@@ -1,0 +1,7 @@
+interface:
+  display_name: "Adopt Skill Stack"
+  short_description: "Install Astrobyte defaults or personalize on request"
+  default_prompt: "Use $adopt-skill-stack to install the shared Astrobyte profile without an onboarding interview."
+
+policy:
+  allow_implicit_invocation: false

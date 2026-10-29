@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "bundle_name": "Astrobyte agent skills",
+  "owner_handle": "astrobyte",
+  "default_operator_profile": "astrobyte",
+  "upstream": {
+    "repository": "TheAstroByte/astrobyte-agent-skills",
+    "remote": "upstream"
+  },
+  "ci": {
+    "enabled": true,
+    "may_disable_during_adoption": true
+  }
+}

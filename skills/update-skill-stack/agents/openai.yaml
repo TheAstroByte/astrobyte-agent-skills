@@ -1,0 +1,7 @@
+interface:
+  display_name: "Update Skill Stack"
+  short_description: "Review upstream changes and preserve personal policy"
+  default_prompt: "Use $update-skill-stack to compare my adopted repository with upstream and show the complete update plan before changing or installing anything."
+
+policy:
+  allow_implicit_invocation: false

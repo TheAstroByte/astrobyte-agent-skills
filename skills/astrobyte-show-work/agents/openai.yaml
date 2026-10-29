@@ -1,0 +1,6 @@
+interface:
+  display_name: "Astrobyte Show Work"
+  short_description: "Keep an auditable technical decision trail"
+  default_prompt: "Use $astrobyte-show-work to keep a concise evidence-backed decision trail for this run."
+policy:
+  allow_implicit_invocation: false

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Astrobyte Project Startup"
+  short_description: "Choose a project stack from explicit constraints"
+  default_prompt: "Use $astrobyte-project-startup to inspect this repository, interview me only about material project choices, and record the selected stack."

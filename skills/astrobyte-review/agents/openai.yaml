@@ -1,0 +1,6 @@
+interface:
+  display_name: "Astrobyte Review"
+  short_description: "Review intent, standards, risk, and proof"
+  default_prompt: "Use $astrobyte-review to challenge this change and synthesize only actionable findings."
+policy:
+  allow_implicit_invocation: false

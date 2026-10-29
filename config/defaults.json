@@ -1,0 +1,20 @@
+{
+  "profile": "builder",
+  "optional_skills": [],
+  "delivery_mode": "durable",
+  "primary_harness": "codex",
+  "model_environment": "mixed",
+  "max_parallel_workers": 3,
+  "unattended_runs": false,
+  "external_actions": "ask",
+  "unattended_external_actions": "ask",
+  "git_workflow": "branch",
+  "issue_tracker": "local",
+  "docs_path": "docs",
+  "compute": "mixed",
+  "experiment_budget": "confirm before expensive or open-ended runs",
+  "browser_automation": true,
+  "containers": true,
+  "archive_duplicates": true,
+  "archive_superseded": true
+}
