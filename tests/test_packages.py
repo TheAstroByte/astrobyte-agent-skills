@@ -112,6 +112,38 @@ class PackageTests(unittest.TestCase):
         (mode / "scripts/preferences.py").unlink()
         self.assertTrue(any("missing resource" in error for error in validate_package(mode, self.catalog["skills"][mode.name])))
 
+    def test_native_installs_carry_applicable_license_notices(self) -> None:
+        cases = {
+            "full": (["--profile", "full"], {
+                "diagnosing-bugs": ["licenses/mattpocock-skills-MIT.txt"],
+                "unslop": ["licenses/pstack-MIT.txt"],
+                "api-and-interface-design": ["licenses/addyosmani-agent-skills-MIT.txt"],
+                "frontend-design": ["skills/frontend-design/LICENSE.txt"],
+                "astrobyte-mode": ["LICENSE"],
+            }),
+            "leaf": (["--skills", "diagnosing-bugs"], {
+                "diagnosing-bugs": ["licenses/mattpocock-skills-MIT.txt"],
+            }),
+            "derived": (["--skills", "astrobyte-review"], {
+                "astrobyte-review": ["LICENSE", "licenses/pstack-MIT.txt", "licenses/mattpocock-skills-MIT.txt"],
+            }),
+            "optional": (["--skills", "astrobyte-pr-workflows"], {
+                "astrobyte-pr-workflows": ["LICENSE", "skills/astrobyte-pr-workflows/LICENSE.tstack.txt"],
+            }),
+        }
+        for name, (selection, packages) in cases.items():
+            with self.subTest(selection=name):
+                home, state = self.root / name / "home", self.root / name / "state"
+                args = ["--harnesses", "cursor", "--home", str(home), "--yes", *selection]
+                with patch.dict(os.environ, {"ASTROBYTE_CONFIG_HOME": str(state)}), contextlib.redirect_stdout(io.StringIO()):
+                    self.assertEqual(install.main(args), 0)
+                for skill, licenses in packages.items():
+                    notice = home / ".cursor/skills" / skill / "LICENSES.txt"
+                    self.assertTrue(notice.is_file(), f"{skill}: installed license notices missing")
+                    content = notice.read_text(encoding="utf-8")
+                    for license_path in licenses:
+                        self.assertIn((install.REPO_ROOT / license_path).read_text(encoding="utf-8").strip(), content)
+
     def test_reference_resources_cannot_escape_or_disappear(self) -> None:
         package = self.root / "leaf"
         package.mkdir()

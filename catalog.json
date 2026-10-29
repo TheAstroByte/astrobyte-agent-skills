@@ -4,28 +4,34 @@
   "sources": {
     "astrobyte": {
       "repository": "TheAstroByte/astrobyte-agent-skills",
-      "version": "0.5.0"
+      "version": "0.5.0",
+      "license_file": "LICENSE"
     },
     "mattpocock": {
       "repository": "mattpocock/skills",
-      "commit": "9c9f36ccd3995266cd675468af71639c8dde1ec5"
+      "commit": "9c9f36ccd3995266cd675468af71639c8dde1ec5",
+      "license_file": "licenses/mattpocock-skills-MIT.txt"
     },
     "pstack": {
       "repository": "cursor/plugins",
       "path": "pstack",
-      "commit": "60c641e4fad674784b30abcf9f8915dea39df38d"
+      "commit": "60c641e4fad674784b30abcf9f8915dea39df38d",
+      "license_file": "licenses/pstack-MIT.txt"
     },
     "addyosmani": {
       "repository": "addyosmani/agent-skills",
-      "commit": "df1edb2e05487d0aa6d93c747141e0aed1187f25"
+      "commit": "df1edb2e05487d0aa6d93c747141e0aed1187f25",
+      "license_file": "licenses/addyosmani-agent-skills-MIT.txt"
     },
     "anthropics": {
       "repository": "anthropics/skills",
-      "commit": "dbd4588f9e1033efb41dad4bef2f7947c8993d44"
+      "commit": "dbd4588f9e1033efb41dad4bef2f7947c8993d44",
+      "license_file": "skills/frontend-design/LICENSE.txt"
     },
     "tstack": {
       "repository": "t3dotgg/tstack",
-      "commit": "7de017b3fc9d50c03cf3ecb98fb71e0ca65a78bd"
+      "commit": "7de017b3fc9d50c03cf3ecb98fb71e0ca65a78bd",
+      "license_file": "skills/astrobyte-pr-workflows/LICENSE.tstack.txt"
     }
   },
   "required_skills": [
