@@ -833,6 +833,37 @@ def atomic_text_write(path: Path, value: str) -> None:
     os.replace(temporary, path)
 
 
+def replace_package(item: dict[str, Any], backup_root: Path) -> Path | None:
+    """Prepare one package before moving its installed copy; restore a failed swap."""
+    target = Path(item["target"])
+    target.parent.mkdir(parents=True, exist_ok=True)
+    with tempfile.TemporaryDirectory(prefix=f".{target.name}-", dir=target.parent) as temporary:
+        staged = Path(temporary) / "package"
+        shutil.copytree(Path(item["source"]), staged)
+        if item.get("preferences_json") is not None:
+            (staged / "references").mkdir(exist_ok=True)
+            atomic_text_write(staged / "references/preferences.json", item["preferences_json"])
+        if tree_hash(staged) != item["hash"]:
+            raise ValueError(f"Staged package hash does not match the plan: {target}")
+
+        backup = None
+        if target.exists():
+            relative = Path(*target.parts[1:]) if target.is_absolute() else target
+            backup = backup_root / relative
+            backup.parent.mkdir(parents=True, exist_ok=True)
+            shutil.move(str(target), str(backup))
+        try:
+            staged.rename(target)
+        except OSError:
+            if backup is not None:
+                try:
+                    shutil.move(str(backup), str(target))
+                except OSError as error:
+                    raise OSError(f"Recovery failed for {target}; inspect backup: {backup}") from error
+            raise
+    return backup
+
+
 def apply_plan(
     answers: dict[str, Any],
     plan: list[dict[str, Any]],
@@ -860,19 +891,17 @@ def apply_plan(
                 shutil.move(str(target), str(backup))
                 backups.append(str(backup))
             continue
-        source = Path(item["source"])
         if item["status"] != "same":
-            target.parent.mkdir(parents=True, exist_ok=True)
-            if target.exists():
-                relative = Path(*target.parts[1:]) if target.is_absolute() else target
-                backup = backup_root / relative
-                backup.parent.mkdir(parents=True, exist_ok=True)
-                shutil.move(str(target), str(backup))
+            try:
+                backup = replace_package(item, backup_root)
+            except (OSError, ValueError) as error:
+                error.add_note(
+                    f"Installation stopped before updating the manifest. Earlier changes may remain. "
+                    f"Backups: {backup_root}. Run --check before retrying."
+                )
+                raise
+            if backup is not None:
                 backups.append(str(backup))
-            shutil.copytree(source, target)
-            if item.get("preferences_json") is not None:
-                (target / "references").mkdir(exist_ok=True)
-                atomic_text_write(target / "references/preferences.json", item["preferences_json"])
         owners = list(item["harnesses"])
         if preserve_existing:
             owners = list(dict.fromkeys([*prior_targets.get(str(target), {}).get("harnesses", []), *owners]))
