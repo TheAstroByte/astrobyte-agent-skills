@@ -4,8 +4,6 @@
 from __future__ import annotations
 
 import argparse
-import shutil
-from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
@@ -18,30 +16,24 @@ except ModuleNotFoundError:  # Direct execution from scripts/bootstrap.py.
 ENTRY_SKILLS = ("adopt-skill-stack", "unslop")
 
 
+def bootstrap_answers(harnesses: list[str], home: Path) -> dict[str, Any]:
+    profile, _, _ = install.load_operator(install.REPO_ROOT)
+    preference_path = install.config_dir(home) / "preferences.json"
+    preferences = install.load_json(preference_path) if preference_path.exists() else None
+    answers = install.resolve_install_answers(home, profile, harnesses, preferences)
+    return install.validate_answers(answers, install.load_json(install.CATALOG_PATH))
+
+
 def build_bootstrap_plan(harnesses: list[str], home: Path) -> list[dict[str, Any]]:
-    plan: list[dict[str, Any]] = []
-    for destination, destination_harnesses in install.destination_groups(harnesses, home).items():
-        for skill in ENTRY_SKILLS:
-            source = install.REPO_ROOT / "skills" / skill
-            target = destination / skill
-            source_hash = install.tree_hash(source)
-            if not target.exists():
-                status = "new"
-            elif install.tree_hash(target) == source_hash:
-                status = "same"
-            else:
-                status = "conflict"
-            plan.append(
-                {
-                    "skill": skill,
-                    "source": source,
-                    "target": target,
-                    "hash": source_hash,
-                    "status": status,
-                    "harnesses": destination_harnesses,
-                }
-            )
-    return plan
+    # Limit this run, without saving the bootstrap subset as an adoption choice.
+    answers = {
+        **bootstrap_answers(harnesses, home),
+        "harnesses": harnesses,
+        "selected_skills": list(ENTRY_SKILLS),
+        "optional_skills": [],
+        "_removed_optional_skills": [],
+    }
+    return install.build_plan(answers, home, install.load_json(install.CATALOG_PATH), prune=False)
 
 
 def print_bootstrap_plan(plan: list[dict[str, Any]], home: Path) -> None:
@@ -55,23 +47,9 @@ def print_bootstrap_plan(plan: list[dict[str, Any]], home: Path) -> None:
 
 
 def apply_bootstrap_plan(plan: list[dict[str, Any]], home: Path) -> list[Path]:
-    timestamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%fZ")
-    backup_root = install.config_dir(home) / "backups" / f"bootstrap-{timestamp}"
-    backups: list[Path] = []
-    for item in plan:
-        if item["status"] == "same":
-            continue
-        source = Path(item["source"])
-        target = Path(item["target"])
-        target.parent.mkdir(parents=True, exist_ok=True)
-        if target.exists():
-            relative = Path(*target.parts[1:]) if target.is_absolute() else target
-            backup = backup_root / relative
-            backup.parent.mkdir(parents=True, exist_ok=True)
-            shutil.move(str(target), str(backup))
-            backups.append(backup)
-        shutil.copytree(source, target)
-    return backups
+    harnesses = list(dict.fromkeys(name for item in plan for name in item["harnesses"]))
+    answers = bootstrap_answers(harnesses, home)
+    return [Path(path) for path in install.apply_plan(answers, plan, home, preserve_existing=True)]
 
 
 def parse_harnesses(raw: str) -> list[str]:
