@@ -12,7 +12,7 @@ Install the committed Astrobyte baseline unless the user requests personalizatio
 python3 scripts/install.py --quick --harnesses cursor
 ```
 
-The installer previews changes and asks for confirmation. It copies real skill folders, backs up differing copies before replacement, and checks its manifest. Fresh installation selects `full`, currently 38 skills, with `durable` delivery and production playbooks available. The packaged baseline and agreement travel inside runtime skills. Quick installation creates no local agreement snapshot, personal repository, or machine registry. Existing explicit preferences and legacy documents remain supported.
+The installer previews changes and asks for confirmation. It copies real skill folders, backs up differing copies before replacement, and checks its manifest. Fresh installation selects `full`, with `durable` delivery and production playbooks available. The packaged baseline and agreement travel inside runtime skills. Quick installation creates no local agreement snapshot, personal repository, or machine registry. Existing explicit preferences and legacy documents remain supported.
 
 Git attribution stays enabled when local Astrobyte configuration is absent. The helper resolves your own Git identity in the repository where a commit occurs. An unresolved identity blocks that commit until you provide your name and email. It never substitutes the baseline owner's identity.
 

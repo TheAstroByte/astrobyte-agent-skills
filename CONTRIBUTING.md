@@ -1,5 +1,7 @@
 # Contributing
 
+The skills are provided as-is. Focused bug fixes, clearer instructions, and harness or OS adaptations are welcome. There is no compatibility guarantee, response deadline, or commitment to maintain every environment. Read the [code of conduct](CODE_OF_CONDUCT.md); report security issues through [SECURITY.md](SECURITY.md).
+
 ## Submit a change
 
 1. Read [AGENTS.md](AGENTS.md) for repository invariants and task-specific references. These instructions apply to human and agent-assisted contributions.
@@ -23,11 +25,22 @@ Only the repository owner, `TheAstroByte`, merges pull requests into `main`. Col
 
 Do not push directly to `main`, force-push it, or delete it. Changes to repository access, visibility, or merge settings require the owner's explicit approval.
 
-This private, personally owned repository currently uses GitHub Free. The workflow above is a contributor agreement, not an enforced branch protection rule. Collaborator write access still technically permits merges and direct pushes.
+GitHub's active repository rules are authoritative for server enforcement. This contributor agreement applies even where a setting is unavailable; it does not claim branch protection is enabled. Changes to repository settings are separate from a contribution's source changes.
+
+## Extend a harness or fix an OS issue
+
+1. Report the source version or commit, OS, harness version, exact command or prompt, expected behavior, and smallest reproduction. Redact personal paths, usernames, endpoints, and credentials. Separate file installation from fresh-session discovery and task behavior.
+2. Check current official documentation for discovery paths, instruction precedence, invocation controls, and available tools. Link the supporting sections and state the versions they cover. Keep undocumented behavior unverified.
+3. Change the relevant `adapters/` guide and the narrow mapping in `scripts/install.py` or `scripts/routing.py` only when needed. Preserve the default full install, unrelated skills, backups, ownership markers, shared destinations, and removal behavior.
+4. Add a focused regression for path, ownership, override, or lifecycle changes using an isolated temporary home. For instruction-only repairs, inspect the copied artifact and exercise a representative task where possible. Run the repository checks above.
+5. Record a fresh-session discovery or routing observation when the host is available. Include a minimal task and result, and update [observed environments](docs/observed-environments.md) with evidence and limits. If unavailable, state that live behavior is pending rather than treating package tests as a substitute.
+
+OS-specific changes follow the same reproduction and focused-test procedure. Do not add a compatibility layer or dependency for an unobserved problem. Preserve source pins, licenses, and documented local adaptations during upstream refreshes.
 
 ## Before the owner merges
 
 - Review the latest PR diff, especially changes to agent instructions, installers, and GitHub Actions workflows.
-- Confirm the `validate` check from GitHub Actions passes on the latest PR commit. It runs package validation and the test suite.
+- Run the local validator and complete test suite on the current PR revision. Record commands, results, and unavailable checks in the PR.
+- Hosted Actions is currently disabled. If the owner later enables it, verify the actual current-head results, including the `Required CI` aggregate. Do not claim a hosted pass or require an unavailable hosted result while execution is disabled.
 - Resolve review conversations and check that the branch has no conflicts with `main`.
 - Prefer squash merging for a focused change, then delete the merged feature branch.

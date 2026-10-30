@@ -10,6 +10,8 @@
 - [ ] `python3 -m unittest discover -s tests -v` passes.
 - [ ] The diff contains no credentials or machine-specific configuration.
 
+<!-- State the tested source revision, OS, Python and harness versions where relevant. Distinguish local, installed-package, and live-host evidence. Hosted Actions is currently disabled; never mark an unrun hosted check as passed. -->
+
 ## Risks and follow-up
 
 <!-- Describe compatibility changes, remaining risks, or follow-up work. Write "None" if there are none. -->
