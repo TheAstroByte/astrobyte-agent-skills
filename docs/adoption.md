@@ -30,6 +30,12 @@ The same run installs the always-loaded routing pointer for each selected harnes
 
 For a smaller workflow, use `--skills astrobyte-mode`. For a standalone leaf, use `--skills diagnosing-bugs`. Hard dependencies are included; conditional specialists are requested only when needed. See the [quick-install guide](../skills/adopt-skill-stack/references/quick-install.md) for updates and third-party installers.
 
+## Bootstrap the entry point
+
+If your agent cannot load the adoption entry point, run `python3 scripts/bootstrap.py --harnesses cursor` from the source checkout. Bootstrap previews and confirms the installation of `adopt-skill-stack` and `unslop` only. It records their ownership in the same manifest as a regular install, so `python3 scripts/install.py --check` and the [uninstall commands](routing.md#lifecycle) work immediately.
+
+Bootstrap preserves existing managed skills, routing, and explicit install choices. It adds no routing itself. A fresh bootstrap does not save its two skills as your permanent selection; later adoption still installs the full default bundle and routing.
+
 ## Cursor local and cloud setup
 
 1. Install current skill copies in `~/.cursor/skills/` using local Cursor or a terminal with source access.
