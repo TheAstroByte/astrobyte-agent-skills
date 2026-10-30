@@ -1,6 +1,6 @@
 ---
 name: browser-testing-with-devtools
-description: Tests in real browsers via Chrome DevTools MCP. Use when building or debugging anything that runs in a browser. Use when you need to inspect the DOM, capture console errors, analyze network requests, profile performance, or verify visual output with real runtime data. Requires the chrome-devtools MCP server to be configured.
+description: Inspect and test browser behavior through an available Chrome DevTools MCP connection. Use that connection for DOM, console, network, performance, and visual checks. Use another available browser capability when this integration is absent; configure it only when requested.
 ---
 
 # Browser Testing with DevTools
@@ -11,6 +11,8 @@ Use Chrome DevTools MCP to give your agent eyes into the browser. This bridges t
 
 ## When to Use
 
+Use the checks below when Chrome DevTools MCP tools are available and the task permits browser access. If absent, use an available native browser or project browser-test tooling for the requested verification, and report any checks that route cannot perform. If no browser route exists, keep rendered checks pending. This skill does not turn ordinary UI work into MCP setup.
+
 - Building or modifying anything that renders in a browser
 - Debugging UI issues (layout, styling, interaction)
 - Diagnosing console errors or warnings
@@ -19,13 +21,13 @@ Use Chrome DevTools MCP to give your agent eyes into the browser. This bridges t
 - Verifying that a fix actually works in the browser
 - Automated UI testing through the agent
 
-**When NOT to use:** Backend-only changes, CLI tools, or code that doesn't run in a browser.
+**When NOT to use:** Backend-only changes, CLI tools, code that does not run in a browser, or tasks using another browser integration.
 
 ## Setting Up Chrome DevTools MCP
 
 ### Installation
 
-Add the following to your project's `.mcp.json` or Claude Code settings:
+For an explicitly requested setup, use the host's MCP configuration. The following is a Claude Code example for `.mcp.json`; other hosts have their own configuration. Preview the configuration change and apply it within the approved scope.
 
 ```json
 {
@@ -39,6 +41,8 @@ Add the following to your project's `.mcp.json` or Claude Code settings:
 ```
 
 `-y` skips the npx install confirmation. By default the server launches Chrome with its own dedicated profile (under `~/.cache/chrome-devtools-mcp/`), separate from your personal browser; `--isolated` goes one step further and uses a temporary profile that is wiped when the browser closes. This is the right setup for most testing.
+
+Check the official [server configuration guide](https://github.com/ChromeDevTools/chrome-devtools-mcp/blob/main/docs/configuration.md) for current host setup and flags before configuring it.
 
 There is also `--autoConnect` (Chrome 144+, requires enabling remote debugging via `chrome://inspect/#remote-debugging`), which attaches the agent to your **running** Chrome instead. Only use it when the test genuinely needs your logged-in state — see Profile Isolation under Security Boundaries first.
 

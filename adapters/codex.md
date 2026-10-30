@@ -4,7 +4,7 @@ Install portable user skills in `~/.agents/skills`. Codex also supports `~/.code
 
 The installer keeps a marked routing block in `$CODEX_HOME/AGENTS.md`, defaulting to `~/.codex/AGENTS.md`. A non-empty `AGENTS.override.md` beside it hides that file, and `--check` reports it as shadowed. Project discovery stops at the Git root. See [Routing](../docs/routing.md).
 
-Use `agents/openai.yaml` to make costly skills explicit-only with `policy.allow_implicit_invocation: false`. `astrobyte-review` is explicit-only, so `astrobyte-mode` reaches it by reading the sibling `../astrobyte-review/SKILL.md`. Keep product and API questions grounded in the native OpenAI documentation skill.
+Use `agents/openai.yaml` with `policy.allow_implicit_invocation: false` to disable implicit skill selection while retaining explicit `$skill-name` invocation. The required `astrobyte-mode` review gate reads the sibling `../astrobyte-review/SKILL.md` through an authorized file read when permitted. Invocation policy is distinct from filesystem permissions; honor host denials. Keep product and API questions grounded in the native OpenAI documentation skill.
 
 Codex permissions remain authoritative. A preference for autonomous work never grants permission for destructive commands, external messages, publication, or credentials.
 
