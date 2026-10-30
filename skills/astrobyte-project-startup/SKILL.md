@@ -8,9 +8,10 @@ description: Establish or revise a project's stack and operating assumptions bef
 ## Inspect
 
 1. Read repository instructions and `.astrobyte/config.json` when present.
-2. Inspect manifests, lockfiles, imports, services, containers, CI, deployment files, data formats, and runnable entry points.
-3. Classify each relevant choice as `detected`, `confirmed`, `defaultable`, `conflicting`, or `unresolved`.
-4. Preserve a coherent existing stack. Treat conflicting evidence as unresolved rather than choosing by file count.
+2. Resolve preferences with this skill's `scripts/runtime_config.py --project <project-root>`. Read the packaged [working agreement](references/working-agreement.md) and apply returned `working_agreement_layers` in order, including local stack choices. Apply higher-priority machine, project, repository, and task evidence as specified in [configuration.md](references/configuration.md). Missing optional config uses the packaged baseline; malformed or explicitly requested missing config needs resolution.
+3. Inspect manifests, lockfiles, imports, services, containers, CI, deployment files, data formats, and runnable entry points.
+4. Classify each relevant choice as `detected`, `confirmed`, `defaultable`, `conflicting`, or `unresolved`.
+5. Preserve a coherent existing stack. Treat conflicting evidence as unresolved rather than choosing by file count.
 
 Inspection is complete when observable facts are separated from decisions that require the operator.
 

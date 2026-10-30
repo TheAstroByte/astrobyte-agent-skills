@@ -22,4 +22,4 @@ Report local installation, sync, and cloud observation separately. Settings and 
 
 ## Review dispatch
 
-Runtime dispatch lives in [`skills/astrobyte-review/references/reviewer-dispatch.md`](../skills/astrobyte-review/references/reviewer-dispatch.md). The packaged baseline requires a read-only Task on the newest offered `gpt-*-sol*` slug at the harness default reasoning level. An unavailable model or Task tool blocks the push or pull request; it does not select a substitute.
+Select the reviewer through the public preference or explicit local requirement in [`reviewer-dispatch.md`](../skills/astrobyte-review/references/reviewer-dispatch.md). Use a read-only Task on the selected available model at the harness default reasoning level. An unavailable model or Task tool leaves the push or pull request pending; follow that policy before proposing a different reviewer.

@@ -1,6 +1,6 @@
 {
   "baseline": {
-    "content_sha256": "28f949dc60b6280520722f8a2c1cbca25ae4fc2db3130872d80a0968b299a2ac",
+    "content_sha256": "170b8441eec438bfdb110a685df3f210a7fc969c139b218722b84bd8257dcfa4",
     "handle": "astrobyte",
     "repository_version": "0.5.0",
     "source_agreement": "profiles/astrobyte/working-agreement.md",
@@ -17,7 +17,7 @@
     "skill_update_policy": "manual-reviewed"
   },
   "review": {
-    "instructions": "Review agent-written changes with the newest GPT Sol model the harness offers, at the harness default reasoning level. Choose the implementation model per task. Use one reviewer. Add a second reviewer when the operator asks, or when the change is high-risk or broad.\n\nRun this review gate before an agent-created pull request or push in durable and production modes."
+    "instructions": "Strongly recommend and prefer the newest GPT Sol model the harness offers for independent read-only review, at the harness default reasoning level. If Sol is unavailable, ask the operator to choose another available independent read-only reviewer. An explicit reviewer requirement remains binding; report review pending when it cannot be met or no independent route exists. Choose the implementation model per task. Use one reviewer. Add a second reviewer when the operator asks, or when the change is high-risk or broad.\n\nRun this review gate before an agent-created pull request or push in durable and production modes."
   },
   "schema_version": 1
 }

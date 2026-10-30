@@ -1,6 +1,6 @@
 # Stack policy
 
-Treat `project-defaults.json` as the machine-readable source of greenfield preferences. Defaults resolve low-risk choices; they do not override repository evidence or a project constraint.
+Treat `project-defaults.json` as the machine-readable source of greenfield preferences. Apply the resolved personal, machine, project, and task choices before these defaults. Preserve coherent repository choices. Qualitative overrides, such as preferring Django or allowing LangChain, belong in the approved local working-agreement delta.
 
 ## Selection rules
 
@@ -35,7 +35,7 @@ Treat `project-defaults.json` as the machine-readable source of greenfield prefe
 
 Pydantic validates and serializes boundary data at runtime. Pyright checks annotated program behavior without executing it. Use both where the project benefits, and keep Pyright at `standard` for exploratory code unless a stricter stable boundary is worth the annotation cost.
 
-Use native structured outputs and Pydantic schemas where supported. Keep LangChain and LlamaIndex outside the selected stack. Use LiteLLM only when its routing capabilities earn the abstraction. Use W&B or Trackio only for a project or team requirement that MLflow or local artifacts do not meet.
+Use native structured outputs and Pydantic schemas where supported. The default new-project stack excludes LangChain and LlamaIndex; an explicit override or coherent existing project can use them. Use LiteLLM only when its routing capabilities earn the abstraction. Use W&B or Trackio only for a project or team requirement that MLflow or local artifacts do not meet.
 
 ## Operational questions
 

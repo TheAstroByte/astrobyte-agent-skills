@@ -33,7 +33,7 @@ class RuntimeConfigTests(unittest.TestCase):
         path.write_text(json.dumps(value))
 
     def test_packaged_command_runs_without_source_or_config(self) -> None:
-        for name in ("astrobyte-mode", "astrobyte-review"):
+        for name in ("astrobyte-mode", "astrobyte-review", "astrobyte-project-startup"):
             skill = self.root / name
             if not skill.exists():
                 shutil.copytree(REPO_ROOT / "skills" / name, skill)
@@ -48,6 +48,35 @@ class RuntimeConfigTests(unittest.TestCase):
             self.assertNotIn("pr_workflows", policy)
             if name == "astrobyte-review":
                 self.assertIn("newest GPT Sol", policy["review_instructions"])
+
+    def test_standalone_startup_resolves_local_stack_and_strict_review_rules(self) -> None:
+        skill = self.root / "astrobyte-project-startup"
+        shutil.copytree(REPO_ROOT / "skills" / skill.name, skill)
+        state = self.home / ".config/astrobyte-agent-skills"
+        rules = "Prefer Django for new Python services. Allow LangChain when it fits."
+        strict_review = "Require the newest offered Sol reviewer. Keep review pending if unavailable."
+        self.write(state / "preferences.json", {
+            "schema_version": 1,
+            "baseline": {"handle": "astrobyte", "repository_version": "0.5.0"},
+            "working_agreement": rules,
+            "overrides": {
+                "defaults": {"delivery_mode": "production"},
+                "review": {"instructions": strict_review},
+            },
+        })
+        result = subprocess.run(
+            [sys.executable, "-B", str(skill / "scripts/runtime_config.py"), "--project", str(self.project)],
+            cwd=self.root, env={"HOME": str(self.home)}, capture_output=True, text=True,
+        )
+        self.assertEqual(result.returncode, 0, result.stderr)
+        policy = json.loads(result.stdout)
+        self.assertEqual(policy["preferences"]["delivery_mode"], "production")
+        self.assertEqual(policy["sources"]["delivery_mode"], "personal-delta")
+        self.assertEqual(policy["working_agreement_overrides"], [rules])
+        self.assertEqual(policy["review_instructions"], strict_review)
+        self.assertEqual(policy["working_agreement_layers"], [{
+            "source": "personal-delta", "rules": rules, "review_instructions": strict_review,
+        }])
 
     def test_personal_machine_project_precedence_and_secret_exclusion(self) -> None:
         state = self.home / ".config/astrobyte-agent-skills"
