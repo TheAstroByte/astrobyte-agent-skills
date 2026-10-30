@@ -25,6 +25,8 @@ Astrobyte replaces retired Addy skill references in `ci-cd-and-automation`, `obs
 
 These are local adaptations of the pinned sources, not upstream changes. Preserve them or reassess them explicitly during refresh. Keep source pins and license notices intact. The catalog's `superseded_skills` list drives a narrow check rejecting those names anywhere in packaged Markdown, including workflow examples. Historical assessment and migration notes outside packages may still name the retired skills.
 
+Other portability adaptations give `research` a current-agent path when delegation is unavailable or disallowed, make `handoff` name the next host's supported invocation or file-read route, and distinguish discovery from authorized loading in `writing-for-agents/SKILL-MECHANICS.md`. The browser specialist activates for an available Chrome DevTools MCP connection; absent integrations use another available browser route without automatic setup. Recheck invocation controls against the official host sources linked from the mechanics reference, and keep explicit-operation requirements and host denials binding.
+
 ## Current source roles
 
 - Matt Pocock: requirements, domain language, module design, diagnosis, research, prototypes, handoffs, and agent-facing writing.

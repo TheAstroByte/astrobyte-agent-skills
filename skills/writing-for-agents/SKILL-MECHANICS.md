@@ -4,14 +4,20 @@ The skill-specific branch of [`writing-for-agents`](SKILL.md): what changes when
 
 ## Invocation
 
-Two choices, trading the two loads:
+Separate discovery, loading, and authority. Descriptions advertise when a host should select a skill; invocation controls govern that host's loading behavior. Neither grants permission for external actions.
 
-- A **model-invoked** skill keeps a `description`, so the agent can fire it autonomously — and other skills can reach it. You can still type its name: model-invocation always _includes_ user reach; a description only ever adds agent discovery, never removes the human's. The description is the skill's top-level context pointer, forced to stay loaded at all times — permanent context load in exchange for discoverability. A model-invoked skill whose content is all reference is also one home for shared reference: another skill can invoke it, so reference needed by several skills lives in one place. Mechanics: omit `disable-model-invocation`, and write a model-facing description carrying the trigger branches (the pointer-writing rules in `SKILL.md` apply in full).
-- A **user-invoked** skill strips the description from the agent's reach: only the human typing its name can invoke it, and no other skill can. Zero context load, but it spends cognitive load — you are the index that must remember it exists. Mechanics: set `disable-model-invocation: true`; the `description` becomes human-facing — a one-line summary, trigger lists stripped.
+- A **model-invoked** skill uses its description to let the host select it for relevant tasks. Write the description for the agent, with the trigger branches it needs. Reference needed by several workflows can live in one discoverable skill when they genuinely need that capability.
+- A **user-invoked** skill is an operation the user chooses explicitly. Use a human-facing description and the supported host control to suppress automatic selection. Keep the operation's user-intent requirement in its instructions, since hosts differ in which controls they enforce.
 
-Pick model-invocation only when the agent must reach the skill on its own, or another skill must. If it only ever fires by hand, make it user-invoked and pay no context load.
+Apply the target host's documented controls:
 
-Shared reference that two user-invoked skills both need can live in neither — with no descriptions, neither can fire the other. Push it to a plain file outside the skill system: external reference any skill can point at.
+- [Codex](https://learn.chatgpt.com/docs/build-skills): `agents/openai.yaml` uses `policy.allow_implicit_invocation: false`; explicit `$skill-name` invocation remains available.
+- [Claude Code](https://code.claude.com/docs/en/skills#control-who-invokes-a-skill): `disable-model-invocation: true` reserves native invocation for the user. If the host blocks a call, honor that block rather than reproducing the operation through another tool.
+- OpenCode differs by version: [version 1](https://opencode.ai/docs/skills/) ignores invocation metadata and uses skill permissions for native loading; [version 2](https://dev.opencode.ai/v2/docs/skills/) hides skills with `opencode/autoinvoke: false` or `disable-model-invocation: true` from automatic discovery while retaining explicit loading. Check the installed version before promising enforcement.
+
+Pick model-invocation when the host should select the skill automatically for relevant work. Use user-invocation when the user must choose the operation. A shared reference reached through an authorized file read does not require automatic selection.
+
+An authorized workflow may read a named skill or reference file when the host permits that read. This is distinct from native skill invocation and never bypasses a denial or authorizes an explicit-only operation. Shared reference files can keep common rules in one place without depending on another skill's invocation mechanism.
 
 ## Splitting by invocation
 
@@ -19,4 +25,4 @@ The invocation cut of splitting (the sequence cut lives in `SKILL.md`): split of
 
 ## Router skills
 
-When user-invoked skills multiply past what you can remember, that piled-up cognitive load is cured by a **router skill**: one user-invoked skill that names the others and when to reach for each, so the human has one skill to remember instead of many. It can only hint, never fire them: user-invoked skills have no description, so nothing but the human can reach them.
+When user-invoked skills multiply past what you can remember, a **router skill** can name them and when to reach each. It may direct an authorized workflow to read shared procedures where the host permits it. Explicit-only operations still require the user's intent; naming them in discussion or reading their reference does not invoke them.
