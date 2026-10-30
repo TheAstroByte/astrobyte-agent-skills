@@ -28,6 +28,25 @@ class ValidateTests(unittest.TestCase):
         shutil.copytree(REPO_ROOT, root, ignore=shutil.ignore_patterns(".git", ".hermes", "__pycache__"))
         return root
 
+    def test_retired_skill_names_are_rejected_in_packaged_instructions(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = self.copy_repository(directory)
+            catalog = json.loads((root / "catalog.json").read_text(encoding="utf-8"))
+            for relative, template in (
+                ("skills/unslop/SKILL.md", "\nUse the `{}` skill.\n"),
+                ("skills/unslop/references/workflow.md", "\n```text\nTest failure -> use {}\n```\n"),
+            ):
+                document = root / relative
+                document.parent.mkdir(parents=True, exist_ok=True)
+                original = document.read_text() if document.exists() else "# Workflow\n"
+                for retired in catalog["superseded_skills"]:
+                    with self.subTest(document=relative, retired=retired):
+                        document.write_text(original + template.format(retired))
+                        self.assertIn(f"{relative}: retired skill reference: {retired}", validate_repository(root))
+                        document.write_text(original + f"\nAn unrelated not-{retired}-replacement identifier.\n")
+                        self.assertNotIn(f"{relative}: retired skill reference: {retired}", validate_repository(root))
+                document.write_text(original)
+
     def test_routing_template_rejects_machine_paths_and_versioned_models(self) -> None:
         for content, expected in (
             ("Read ~/.cursor/skills first.", "home-relative path"),

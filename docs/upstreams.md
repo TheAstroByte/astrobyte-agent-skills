@@ -19,6 +19,12 @@ Keep these generated files with standalone copies and cloud-synced packages. The
 
 For a new skill recommendation, cite primary evidence for behavior, maintenance, and license. Also cite independent public feedback. Separate fact, reputation, and inference, and state when meaningful independent feedback does not exist.
 
+## Local adaptations of specialist instructions
+
+Astrobyte replaces retired Addy skill references in `ci-cd-and-automation`, `observability-and-instrumentation`, `deprecation-and-migration`, `git-workflow-and-versioning`, `security-and-hardening`, and the `shipping-and-launch` completion checklist. Diagnosis points to `diagnosing-bugs` where appropriate; the security branch declares it as conditional. Standalone specialists retain local steps for diagnosis, small changes, review, and decision records without requiring removed workflow packages.
+
+These are local adaptations of the pinned sources, not upstream changes. Preserve them or reassess them explicitly during refresh. Keep source pins and license notices intact. The catalog's `superseded_skills` list drives a narrow check rejecting those names anywhere in packaged Markdown, including workflow examples. Historical assessment and migration notes outside packages may still name the retired skills.
+
 ## Current source roles
 
 - Matt Pocock: requirements, domain language, module design, diagnosis, research, prototypes, handoffs, and agent-facing writing.
