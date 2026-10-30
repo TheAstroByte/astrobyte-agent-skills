@@ -56,7 +56,7 @@ class PreferenceTests(unittest.TestCase):
         self.preferences["working_agreement"] = "Explain consequential choices concisely."
         self.path.write_text(json.dumps(self.preferences))
         self.assertEqual(self.apply("--preferences", str(self.path), "--portable-preferences"), 0)
-        hashes = {name: install.tree_hash(self.home / ".cursor/skills" / name) for name in ("astrobyte-mode", "astrobyte-review", "astrobyte-git-identity")}
+        hashes = {name: install.tree_hash(self.home / ".cursor/skills" / name) for name in ("astrobyte-mode", "astrobyte-review", "astrobyte-git-identity", "astrobyte-project-startup")}
         for name in hashes:
             self.assertEqual(install.load_json(self.home / ".cursor/skills" / name / "references/preferences.json"), self.preferences)
         self.assertEqual(self.apply(), 0)
@@ -64,11 +64,12 @@ class PreferenceTests(unittest.TestCase):
         env = {key: value for key, value in os.environ.items() if not key.startswith(("ASTROBYTE_", "GIT_"))}
         env["GIT_CONFIG_NOSYSTEM"] = "1"
         env["HOME"] = str(self.root / "empty-cloud-home")
-        result = subprocess.run([sys.executable, "-B", str(self.home / ".cursor/skills/astrobyte-review/scripts/runtime_config.py")], env=env, cwd=self.root, check=True, capture_output=True, text=True)
-        resolved = json.loads(result.stdout)
-        self.assertEqual(resolved["preferences"]["delivery_mode"], "production")
-        self.assertEqual(resolved["review_instructions"], self.preferences["overrides"]["review"]["instructions"])
-        self.assertEqual(resolved["working_agreement_overrides"], [self.preferences["working_agreement"]])
+        for name in ("astrobyte-review", "astrobyte-project-startup"):
+            result = subprocess.run([sys.executable, "-B", str(self.home / ".cursor/skills" / name / "scripts/runtime_config.py")], env=env, cwd=self.root, check=True, capture_output=True, text=True)
+            resolved = json.loads(result.stdout)
+            self.assertEqual(resolved["preferences"]["delivery_mode"], "production")
+            self.assertEqual(resolved["review_instructions"], self.preferences["overrides"]["review"]["instructions"])
+            self.assertEqual(resolved["working_agreement_overrides"], [self.preferences["working_agreement"]])
         repository = self.root / "cloud-repository"
         repository.mkdir()
         for command in (["git", "init", "-b", "main"], ["git", "config", "user.name", "Cloud Owner"], ["git", "config", "user.email", "cloud@example.com"]):

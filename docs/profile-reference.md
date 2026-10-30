@@ -32,6 +32,35 @@ Add `--portable-preferences` after reviewing the entire file for private informa
 
 New quick installs record inherited machine values separately in `baseline_inheritance.values`. Unchanged inherited values follow baseline updates. Edited values remain explicit. Older full profiles and configurations retain their behavior until you explicitly migrate them to deltas. The runtime [configuration contract](../skills/astrobyte-mode/references/configuration.md) defines precedence.
 
+## Customize one machine with your agent
+
+Keep personal differences in `~/.config/astrobyte-agent-skills/preferences.json`, outside the source checkout. No repository `.gitignore` entry is needed for that location. The default install keeps them local; portable export requires the explicit choice described above. Configure each machine separately, or copy only an approved preferences file to another machine and apply it there. Machine state and credentials stay on their own machine.
+
+Ask your agent:
+
+```text
+Keep the Astrobyte defaults, prefer Django for new Python services, and require Sol for my reviews on this machine. Show the differences and keep them local. Preserve existing project tooling.
+```
+
+The agent previews the requested differences, checks conflicts with existing machine and project settings, and applies the approved file through the native installer. It updates local preferences rather than editing shipped skills or the shared profile. A normalized example is:
+
+```json
+{
+  "schema_version": 1,
+  "baseline": {"handle": "astrobyte", "repository_version": "0.5.0"},
+  "working_agreement": "Prefer Django for new Python services. Preserve coherent existing project tooling.",
+  "overrides": {
+    "review": {
+      "instructions": "Require the newest offered GPT Sol reviewer at the harness default reasoning level. If unavailable, keep the independent review gate pending; do not substitute another model."
+    }
+  }
+}
+```
+
+The public baseline strongly recommends and prefers Sol. This example makes it a local requirement. Without a strict requirement, unavailable Sol prompts an explicit choice of another available independent read-only reviewer. Missing independent review still leaves publication pending.
+
+Verify the effective policy by running `python3 <installed-skill>/scripts/runtime_config.py --project <project-root>` from `astrobyte-mode`, `astrobyte-review`, or `astrobyte-project-startup`. Inspect the returned sources and ordered agreement layers, then check that startup and review apply those rules. Project evidence and current task instructions still take precedence. Existing legacy agreements remain explicit; keep them until you approve migration of their rules.
+
 ## Legacy personal profile
 
 `profile.json` uses schema version 1.

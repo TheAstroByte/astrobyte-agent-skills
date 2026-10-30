@@ -27,7 +27,7 @@ Ask when the machine or project says `ask`, or when the requested work conflicts
 
 ## Code and dependencies
 
-Prefer direct code and small typed adapters over broad frameworks. Do not use LangChain or LlamaIndex. Use Pydantic and Pydantic AI where they fit the boundary or agent design. Preserve a coherent existing stack unless the operator approves a migration.
+For new projects, prefer direct code and small typed adapters over broad frameworks, leaving LangChain and LlamaIndex outside the default stack. Use Pydantic and Pydantic AI where they fit the boundary or agent design. These are overridable preferences: apply explicit personal, project, and task choices, and preserve a coherent existing stack unless the operator approves a migration.
 
 Before changing a dependency, inspect its callers, lockfile, runtime constraints, and affected tests. Explain the blast radius of a breaking upgrade. Do not replace working project tooling only because the profile has a different greenfield preference.
 
@@ -37,7 +37,7 @@ Verify the artifact that a user or downstream system consumes. Run the CLI, call
 
 ## Review
 
-Review agent-written changes with the newest GPT Sol model the harness offers, at the harness default reasoning level. Choose the implementation model per task. Use one reviewer. Add a second reviewer when the operator asks, or when the change is high-risk or broad.
+Strongly recommend and prefer the newest GPT Sol model the harness offers for independent read-only review, at the harness default reasoning level. If Sol is unavailable, ask the operator to choose another available independent read-only reviewer. An explicit reviewer requirement remains binding; report review pending when it cannot be met or no independent route exists. Choose the implementation model per task. Use one reviewer. Add a second reviewer when the operator asks, or when the change is high-risk or broad.
 
 Run this review gate before an agent-created pull request or push in durable and production modes.
 

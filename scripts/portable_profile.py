@@ -78,8 +78,14 @@ def resource_contents(root: Path = REPO_ROOT) -> dict[Path, str]:
     }
     envelope = {"schema_version": 1, "baseline": provenance}
     return {
-        Path("skills/astrobyte-mode/references/baseline.json"): json_text({**envelope, **portable}),
-        Path("skills/astrobyte-mode/references/working-agreement.md"): GENERATED_HEADER + agreement,
+        **{
+            Path(f"skills/{skill}/references/baseline.json"): json_text({**envelope, **portable})
+            for skill in ("astrobyte-mode", "astrobyte-project-startup")
+        },
+        **{
+            Path(f"skills/{skill}/references/working-agreement.md"): GENERATED_HEADER + agreement
+            for skill in ("astrobyte-mode", "astrobyte-project-startup")
+        },
         Path("skills/astrobyte-review/references/review-policy.json"): json_text({
             **envelope, "defaults": portable["defaults"],
             "review": {"instructions": agreement_section(agreement, "Review")},
@@ -90,14 +96,17 @@ def resource_contents(root: Path = REPO_ROOT) -> dict[Path, str]:
         **{
             Path(f"skills/{skill}/scripts/runtime_config.py"):
                 (root / "scripts/runtime_config.py").read_text(encoding="utf-8")
-            for skill in ("astrobyte-mode", "astrobyte-review")
+            for skill in ("astrobyte-mode", "astrobyte-review", "astrobyte-project-startup")
         },
-        Path("skills/astrobyte-review/references/configuration.md"):
-            (root / "skills/astrobyte-mode/references/configuration.md").read_text(encoding="utf-8"),
+        **{
+            Path(f"skills/{skill}/references/configuration.md"):
+                (root / "skills/astrobyte-mode/references/configuration.md").read_text(encoding="utf-8")
+            for skill in ("astrobyte-review", "astrobyte-project-startup")
+        },
         **{
             Path(f"skills/{skill}/scripts/preferences.py"):
                 (root / "scripts/preferences.py").read_text(encoding="utf-8")
-            for skill in ("astrobyte-mode", "astrobyte-review", "astrobyte-git-identity")
+            for skill in ("astrobyte-mode", "astrobyte-review", "astrobyte-git-identity", "astrobyte-project-startup")
         },
     }
 

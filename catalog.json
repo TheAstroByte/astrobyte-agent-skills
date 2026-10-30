@@ -224,7 +224,19 @@
         "references/frontend.md"
       ]
     },
-    "astrobyte-project-startup": {"source": "astrobyte", "tier": "core", "runtime_resources": ["references/project-defaults.json"]},
+    "astrobyte-project-startup": {
+      "source": "astrobyte",
+      "tier": "core",
+      "portable_preferences": true,
+      "runtime_resources": [
+        "references/project-defaults.json",
+        "references/baseline.json",
+        "references/working-agreement.md",
+        "references/configuration.md",
+        "scripts/runtime_config.py",
+        "scripts/preferences.py"
+      ]
+    },
     "astrobyte-git-identity": {
       "source": "astrobyte",
       "tier": "core",
