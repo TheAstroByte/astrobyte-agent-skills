@@ -2,7 +2,7 @@
   "baseline": {
     "content_sha256": "170b8441eec438bfdb110a685df3f210a7fc969c139b218722b84bd8257dcfa4",
     "handle": "astrobyte",
-    "repository_version": "0.5.0",
+    "repository_version": "0.6.0",
     "source_agreement": "profiles/astrobyte/working-agreement.md",
     "source_profile": "profiles/astrobyte/profile.json"
   },
