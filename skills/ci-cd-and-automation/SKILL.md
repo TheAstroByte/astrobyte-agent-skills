@@ -186,7 +186,7 @@ Agent fixes → pushes → CI runs again
 ```
 Lint failure → Agent runs `npm run lint --fix` and commits
 Type error  → Agent reads the error location and fixes the type
-Test failure → Agent follows debugging-and-error-recovery skill
+Test failure → Agent reproduces the failing check, isolates the cause, fixes it, and reruns locally
 Build error → Agent checks config and dependencies
 ```
 

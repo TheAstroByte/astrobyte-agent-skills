@@ -110,7 +110,7 @@ git commit -m "refactor validation and add phone number field"
 
 ### 5. Size Your Changes
 
-Target ~100 lines per commit/PR. Changes over ~1000 lines should be split. See the splitting strategies in `code-review-and-quality` for how to break down large changes.
+Target ~100 lines per commit/PR. Changes over ~1000 lines should be split. Separate preparatory refactoring, behavior changes, and migrations when each can be verified independently. Order dependent changes so every commit or PR leaves a working, reviewable state.
 
 ```
 ~100 lines  → Easy to review, easy to revert

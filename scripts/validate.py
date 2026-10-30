@@ -110,6 +110,11 @@ def validate_repository(root: Path = REPO_ROOT) -> list[str]:
     for name in directories:
         path = skills_root / name / "SKILL.md"
         errors.extend(validate_package(path.parent, catalog.get("skills", {}).get(name, {})))
+        for document in sorted(path.parent.rglob("*.md")):
+            text = document.read_text(encoding="utf-8")
+            for retired in catalog.get("superseded_skills", []):
+                if re.search(rf"(?<![a-z0-9-]){re.escape(retired)}(?![a-z0-9-])", text):
+                    errors.append(f"{document.relative_to(root)}: retired skill reference: {retired}")
         try:
             metadata = frontmatter(path)
         except ValueError as exc:

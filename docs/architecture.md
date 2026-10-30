@@ -36,7 +36,7 @@ Configuration can narrow autonomy. Harness permissions and user authority remain
 
 Validation checks hard dependency closure, unknown names, cycles, and all profiles. It validates required files and Markdown references throughout each skill package, excluding fenced project examples. Runtime resources and symlinks must stay inside the copied package. Tests validate copies outside the source checkout. Management skills explicitly require source access and disable automatic model invocation; runtime workflows do not trigger management automatically.
 
-The architect's API specialist is conditional. The security skill's observability reference is a suggestion; its legacy incident-debugging reference maps to `diagnosing-bugs`. External tools remain runtime capabilities to check, not sibling skill dependencies. The installed router's [dependency guidance](../skills/astrobyte-mode/references/dependencies.md) explains missing and legacy references. No vendored prompt rewrite or profile reduction is part of this change.
+The architect's API specialist and the security skill's `diagnosing-bugs` procedure for privacy incidents are conditional. The security skill's observability reference is a suggestion. External tools remain runtime capabilities to check, not sibling skill dependencies. The installed router's [dependency guidance](../skills/astrobyte-mode/references/dependencies.md) explains when to request missing packages. Standalone specialists carry local steps where another skill is unnecessary. Repository validation rejects cataloged retired skill names in packaged Markdown instructions.
 
 ## Personal and machine policy
 

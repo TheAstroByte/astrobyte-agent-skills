@@ -1,6 +1,6 @@
 # Definition of Done
 
-A standing, project-wide bar that every change must clear before it counts as done. Unlike acceptance criteria, which vary per task and answer "did we build the right thing?", the Definition of Done is the same every time and answers "is this finished to our standard?". Use it as the final gate in `planning-and-task-breakdown`, `incremental-implementation`, and `shipping-and-launch`.
+A standing, project-wide bar that every change must clear before it counts as done. Unlike acceptance criteria, which vary per task and answer "did we build the right thing?", the Definition of Done is the same every time and answers "is this finished to our standard?". Apply it when planning a change, completing implementation, and preparing a release.
 
 ## Definition of Done vs. Acceptance Criteria
 
@@ -32,7 +32,7 @@ Apply this to every change before declaring it done.
 - [ ] Changes are scoped to the task; no unrelated refactors snuck in
 - [ ] Linting and formatting pass
 
-The depth behind these items lives in `code-review-and-quality` (the five-axis review) and `code-simplification` (reducing complexity without changing behavior).
+Review the change against its intent, correctness, public contracts, data integrity, and verification evidence. Remove dead code and unnecessary abstractions while preserving behavior, then rerun affected checks.
 
 ### Integration
 - [ ] Change works with the rest of the system, not just in isolation
@@ -41,7 +41,7 @@ The depth behind these items lives in `code-review-and-quality` (the five-axis r
 
 ### Documentation
 - [ ] Public interfaces, APIs, and user-facing behavior are documented
-- [ ] Architectural decisions worth preserving are recorded (see `documentation-and-adrs`)
+- [ ] Architectural decisions worth preserving record the context, alternatives, tradeoffs, and consequences
 - [ ] Documentation describes the current state in timeless language, not the change history
 
 ### Ship-readiness
