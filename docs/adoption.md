@@ -2,6 +2,8 @@
 
 Start with the shared Astrobyte baseline. Personalization records only requested differences. Local-only use is a complete result; an onboarding interview and a separate repository are optional.
 
+Use the prerequisites and default entry path in the [README](../README.md#install-the-default). Skills are distributed as-is; [observed environments](observed-environments.md) distinguishes actual use from package checks and pending host verification.
+
 ## Instructions for the agent
 
 For installation, read [quick-install.md](../skills/adopt-skill-stack/references/quick-install.md) and follow the requested scope. Use the default profile unless the user selects skills or another bundle. Resolve source access only for installation, updates, or requested personalization.
@@ -37,6 +39,8 @@ If your agent cannot load the adoption entry point, run `python3 scripts/bootstr
 Bootstrap preserves existing managed skills, routing, and explicit install choices. It adds no routing itself. A fresh bootstrap does not save its two skills as your permanent selection; later adoption still installs the full default bundle and routing.
 
 ## Cursor local and cloud setup
+
+Cursor personal sync applies to Cloud Agents you start yourself. It does not supply skills to automation runs, including Run as Me. Repository-level skills for a requested automation are a separate distribution choice; review them for private information before committing. See [Cursor's sync boundary](https://cursor.com/docs/skills#use-personal-skills-with-cloud-agents).
 
 1. Install current skill copies in `~/.cursor/skills/` using local Cursor or a terminal with source access.
 2. Enable personal skill sync and start a fresh Cloud Agent. Invoke `/astrobyte-mode` with the task you want it to perform.

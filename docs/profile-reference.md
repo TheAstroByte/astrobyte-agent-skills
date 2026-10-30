@@ -2,7 +2,7 @@
 
 Runtime packages include the shared baseline. Explicit personal, machine, and project preferences can override it. A current user instruction always has priority.
 
-Ordinary installation inherits the committed default operator profile, currently `astrobyte`, without an onboarding interview. That baseline selects the `full` bundle with `durable` delivery and production playbooks available. Personalization is the optional process of recording different preferences in another profile. Quick installation preserves existing explicit local settings and profile documents; it does not import the owner's machine registry or human Git author.
+Ordinary installation inherits the committed default operator profile, currently `astrobyte`, without an onboarding interview. That baseline selects the `full` bundle with `durable` delivery and production playbooks available. Optional personalization records requested differences in local preferences; a separately maintained profile is another explicit choice. Quick installation preserves existing explicit local settings and profile documents; it does not import the owner's machine registry or human Git author.
 
 | Layer | Location | Contains | Must exclude |
 |---|---|---|---|
