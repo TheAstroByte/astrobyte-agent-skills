@@ -39,7 +39,7 @@ Keep the Astrobyte defaults, use branches, and prefer Django for new Python serv
 
 Approved differences live outside this checkout in `~/.config/astrobyte-agent-skills/preferences.json`. Configure each machine separately. Export into synced skills only when you explicitly choose `--portable-preferences` after reviewing the file. See [customization and precedence](docs/profile-reference.md#customize-one-machine-with-your-agent).
 
-Independent review strongly prefers Sol. If unavailable, the public policy permits an explicitly chosen independent read-only alternative; a strict local reviewer requirement stays binding. The [optional PR workflows](docs/pr-workflows.md), councils, and media specialists are absent from the default bundle.
+Independent review strongly prefers Sol. If unavailable, the public policy permits an explicitly chosen independent read-only alternative; a strict local reviewer requirement stays binding. The [optional PR workflows](docs/pr-workflows.md) and councils are absent from the default bundle.
 
 ## Check, update, or remove
 
