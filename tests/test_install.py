@@ -322,7 +322,7 @@ class InstallTests(unittest.TestCase):
         self.assertEqual(validated["unattended_external_actions"], "allow-configured")
 
     def test_optional_skill_is_absent_by_default_and_opted_in_only_when_selected(self) -> None:
-        name = "davinci-resolve-reel-editing"
+        name = "git-workflow-and-versioning"
         answers = install.validate_answers(dict(self.answers), self.catalog)
         self.assertEqual(answers["optional_skills"], [])
         self.assertNotIn(name, {item["skill"] for item in install.build_plan(answers, self.home, self.catalog)})
@@ -343,7 +343,7 @@ class InstallTests(unittest.TestCase):
         self.assertTrue(any(path.endswith(name) for path in backups))
 
     def test_optional_skill_conflict_is_backed_up(self) -> None:
-        name = "davinci-resolve-reel-editing"
+        name = "git-workflow-and-versioning"
         target = self.home / ".agents" / "skills" / name
         target.mkdir(parents=True)
         (target / "SKILL.md").write_text("local version\n", encoding="utf-8")
@@ -354,12 +354,12 @@ class InstallTests(unittest.TestCase):
         self.assertIn("local version", (next(Path(p) for p in backups if p.endswith(name)) / "SKILL.md").read_text())
 
     def test_optional_selection_can_be_cleared_interactively(self) -> None:
-        name = "davinci-resolve-reel-editing"
+        name = "git-workflow-and-versioning"
         with patch.object(install, "ask", return_value="-"):
             self.assertEqual(install.ask_optional_skills([name], [name]), [])
 
     def test_optional_skill_answer_rejects_unknown_duplicates_and_wrong_type(self) -> None:
-        for selection in (["unknown"], ["davinci-resolve-reel-editing"] * 2, "davinci-resolve-reel-editing"):
+        for selection in (["unknown"], ["git-workflow-and-versioning"] * 2, "git-workflow-and-versioning"):
             with self.subTest(selection=selection), self.assertRaisesRegex(ValueError, "optional_skills"):
                 install.validate_answers({**self.answers, "optional_skills": selection}, self.catalog)
 

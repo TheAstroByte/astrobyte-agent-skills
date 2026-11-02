@@ -288,7 +288,6 @@
       ]
     },
     "astrobyte-recall": {"source": "astrobyte", "tier": "core", "derived_from": ["pstack:recall", "mattpocock:handoff"]},
-    "davinci-resolve-reel-editing": {"source": "astrobyte", "tier": "optional"},
     "grilling": {"source": "mattpocock", "tier": "core"},
     "domain-modeling": {"source": "mattpocock", "tier": "core"},
     "codebase-design": {"source": "mattpocock", "tier": "core"},

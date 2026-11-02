@@ -12,10 +12,6 @@
     {
       "title": "Engineering specialists",
       "skills": ["unslop", "blast-radius", "technical-writing", "typescript-best-practices", "api-and-interface-design", "frontend-ui-engineering", "browser-testing-with-devtools", "security-and-hardening", "source-driven-development"]
-    },
-    {
-      "title": "Optional media",
-      "skills": ["davinci-resolve-reel-editing"]
     }
   ]
 }

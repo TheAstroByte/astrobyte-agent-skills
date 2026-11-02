@@ -19,7 +19,7 @@ class ValidateTests(unittest.TestCase):
             shutil.copytree(REPO_ROOT, root, ignore=shutil.ignore_patterns(".git", ".hermes", "__pycache__"))
             catalog_path = root / "catalog.json"
             catalog = json.loads(catalog_path.read_text(encoding="utf-8"))
-            catalog["profiles"]["full"].append("davinci-resolve-reel-editing")
+            catalog["profiles"]["full"].append("git-workflow-and-versioning")
             catalog_path.write_text(json.dumps(catalog), encoding="utf-8")
             self.assertTrue(any("optional" in error for error in validate_repository(root)))
 
