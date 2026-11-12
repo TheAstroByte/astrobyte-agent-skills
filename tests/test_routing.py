@@ -36,6 +36,7 @@ class RoutingInstallTests(unittest.TestCase):
         self.claude_rule = self.home / ".claude/rules/astrobyte-routing.md"
         self.codex_agents = self.home / ".codex/AGENTS.md"
         self.opencode_agents = self.home / ".config/opencode/AGENTS.md"
+        self.vibe_agents = self.home / ".vibe/AGENTS.md"
 
     def run_installer(self, *args: str, inputs: list[str] | None = None) -> tuple[int, str]:
         output = io.StringIO()
@@ -183,6 +184,42 @@ class RoutingInstallTests(unittest.TestCase):
         self.assertTrue((self.root / "xdg/opencode/AGENTS.md").is_file())
         for path in (self.home / ".claude", self.home / ".codex", self.home / ".config/opencode"):
             self.assertFalse(path.exists(), path)
+        self.assertEqual(self.check()[0], 0)
+
+    def test_mistral_vibe_gets_managed_block_and_shares_agents_skills(self) -> None:
+        code, output = self.install("mistral-vibe,codex")
+        self.assertEqual(code, 0, output)
+        text = self.vibe_agents.read_text(encoding="utf-8")
+        self.assertTrue(text.startswith(BLOCK_BEGIN))
+        self.assertIn("`astrobyte-review`", text)
+        manifest = self.manifest()
+        record = manifest["routing"][str(self.vibe_agents)]
+        self.assertEqual(record["harness"], "mistral-vibe")
+        self.assertEqual(record["kind"], "managed-block")
+        shared = manifest["targets"][str(self.home / ".agents/skills/astrobyte-mode")]
+        self.assertEqual(shared["harnesses"], ["mistral-vibe", "codex"])
+        self.assertEqual(self.check()[0], 0)
+
+    def test_vibe_home_override_moves_routing_but_not_skills(self) -> None:
+        os.environ["VIBE_HOME"] = str(self.root / "vibe-home")
+        code, output = self.install("mistral-vibe")
+        self.assertEqual(code, 0, output)
+        override_agents = self.root / "vibe-home/AGENTS.md"
+        self.assertTrue(override_agents.is_file())
+        self.assertFalse(self.vibe_agents.exists())
+        self.assertTrue((self.home / ".agents/skills/astrobyte-mode/SKILL.md").is_file())
+        self.assertIn(str(override_agents), self.manifest()["routing"])
+        self.assertEqual(self.check()[0], 0)
+
+    def test_mistral_vibe_uninstall_releases_shared_copy_only_when_last_owner_leaves(self) -> None:
+        self.assertEqual(self.install("mistral-vibe,opencode")[0], 0)
+        shared = self.home / ".agents/skills/astrobyte-mode"
+        code, output = self.run_installer("--uninstall", "--harnesses", "mistral-vibe", "--yes")
+        self.assertEqual(code, 0, output)
+        self.assertTrue(shared.is_dir())
+        self.assertEqual(self.manifest()["targets"][str(shared)]["harnesses"], ["opencode"])
+        self.assertFalse(self.vibe_agents.exists())
+        self.assertTrue(self.opencode_agents.exists())
         self.assertEqual(self.check()[0], 0)
 
     def test_codex_override_shadow_is_reported_and_not_success(self) -> None:

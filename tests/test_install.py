@@ -68,6 +68,12 @@ class InstallTests(unittest.TestCase):
         self.assertEqual(len(groups), 1)
         self.assertEqual(next(iter(groups.values())), ["codex", "opencode"])
 
+    def test_mistral_vibe_shares_the_agents_skills_destination(self) -> None:
+        groups = install.destination_groups(["codex", "opencode", "mistral-vibe"], self.home)
+        self.assertEqual(len(groups), 1)
+        self.assertEqual(next(iter(groups.values())), ["codex", "opencode", "mistral-vibe"])
+        self.assertEqual(install.HARNESSES["mistral-vibe"].destination(self.home), self.home / ".agents" / "skills")
+
     def test_same_install_resolution_supports_one_shared_two_and_five_harnesses(self) -> None:
         profile, _, _ = install.load_operator(install.REPO_ROOT)
         for harnesses, destinations in ((["cursor"], 1), (["codex", "opencode"], 1), (list(install.HARNESSES), 4)):

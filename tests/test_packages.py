@@ -67,7 +67,7 @@ class PackageTests(unittest.TestCase):
             self.assertEqual(install.main(args), 0)
             groups = install.destination_groups(list(install.HARNESSES), home)
             self.assertEqual(len(groups), 4)
-            self.assertEqual(groups[home / ".agents/skills"], ["codex", "opencode"])
+            self.assertEqual(groups[home / ".agents/skills"], ["codex", "opencode", "mistral-vibe"])
             for destination in groups:
                 with self.subTest(destination=destination.relative_to(home)):
                     package = destination / "frontend-design"

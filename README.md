@@ -23,7 +23,9 @@ python3 scripts/install.py --harnesses cursor
 python3 scripts/install.py --check
 ```
 
-Replace `cursor` with `codex`, `opencode`, `claude`, or `hermes`, or use a comma-separated list. The installer previews skill and routing changes, asks for confirmation, and backs up conflicting copies. `--dry-run` previews without writes. Your own Git identity stays in your execution environment.
+Replace `cursor` with `codex`, `opencode`, `claude`, `mistral-vibe`, or `hermes`, or use a comma-separated list. The installer previews skill and routing changes, asks for confirmation, and backs up conflicting copies. `--dry-run` previews without writes. Your own Git identity stays in your execution environment.
+
+Codex, OpenCode, and Mistral Vibe all read the Agent Skills standard directory `~/.agents/skills`, so installing for any of them installs for all: the installer writes one shared copy per skill, records every owning harness, and `--check` verifies that single copy. Uninstalling one harness only releases its ownership; the copy moves to backups when the last owner is removed. Cursor, Claude Code, and Hermes keep their own skill directories. See the [Mistral Vibe adapter](adapters/mistral-vibe.md) and [Routing](docs/routing.md).
 
 Start a fresh agent session and ask it to use `astrobyte-mode` for a bounded task. Verify discovery in that host; copying files alone does not prove activation. Routing locations and capability limits are in [Routing](docs/routing.md) and the [host adapters](adapters/). Hermes currently needs explicit invocation.
 

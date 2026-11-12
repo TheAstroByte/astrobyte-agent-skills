@@ -20,6 +20,7 @@ Checked 30 October 2026 during public preparation, based on merged source revisi
 | Cursor | Isolated copies, local routing file creation, and portable runtime resources tested | Local automatic discovery, personal sync, hosted Cloud Agents, and automation behavior |
 | Claude Code | Isolated copies and routing ownership/removal tested | Live discovery, invocation controls, rules precedence, and reviewer access |
 | Hermes | Isolated copies tested; installer reports unavailable automatic routing | Live recursive discovery and explicit invocation; automatic routing is not implemented |
+| Mistral Vibe (CLI 3.1.2 on macOS) | A live Mistral Vibe session listed the installed Astrobyte skills discovered from the shared `~/.agents/skills`; temporary-home installs cover the routing block in `$VIBE_HOME/AGENTS.md`, shared-destination ownership with Codex and OpenCode, `--check`, and uninstall | Fresh-session routing load from `~/.vibe/AGENTS.md`, `/skill-name` invocation controls, and `agents.spawn` review dispatch |
 
 The [adapters](../adapters/) describe documented host behavior. A source citation or successful file copy is not a live host result. Cursor's [cloud smoke checklist](cursor-cloud-smoke.md) remains pending until run in an actual hosted environment. Browser verification requires an available permitted route; no browser session was run during this preparation slice.
 

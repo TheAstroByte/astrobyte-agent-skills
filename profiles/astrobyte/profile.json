@@ -62,6 +62,10 @@
       "hermes": {
         "name": "Hermes",
         "email": "hermes@local.invalid"
+      },
+      "mistral-vibe": {
+        "name": "Mistral Vibe",
+        "email": "mistral-vibe@local.invalid"
       }
     }
   },
