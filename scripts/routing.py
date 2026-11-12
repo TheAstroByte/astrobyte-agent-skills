@@ -18,11 +18,12 @@ from typing import Any
 REPO_ROOT = Path(__file__).resolve().parents[1]
 TEMPLATE_RELATIVE = Path("templates") / "routing.md"
 TEMPLATE_SCHEMA = 1
-ROUTING_HARNESSES = ("cursor", "codex", "opencode", "claude")
+ROUTING_HARNESSES = ("cursor", "codex", "opencode", "claude", "mistral-vibe")
 REQUIRED_SKILLS = frozenset({"astrobyte-mode", "astrobyte-review", "astrobyte-git-identity"})
 ENVIRONMENT_OVERRIDES = (
     "CLAUDE_CONFIG_DIR",
     "CODEX_HOME",
+    "VIBE_HOME",
     "XDG_CONFIG_HOME",
     "OPENCODE_DISABLE_CLAUDE_CODE",
     "OPENCODE_DISABLE_CLAUDE_CODE_PROMPT",
@@ -85,6 +86,11 @@ def xdg_config_home(home: Path) -> Path:
     return Path(override).expanduser() if override else home / ".config"
 
 
+def vibe_home(home: Path) -> Path:
+    override = os.environ.get("VIBE_HOME")
+    return Path(override).expanduser() if override else home / ".vibe"
+
+
 def harness_location(harness: str, home: Path) -> Location:
     if harness == "cursor":
         return Location(harness, home / ".cursor" / "rules" / "astrobyte-routing.mdc", OWNED_FILE)
@@ -94,6 +100,8 @@ def harness_location(harness: str, home: Path) -> Location:
         return Location(harness, codex_home(home) / "AGENTS.md", MANAGED_BLOCK)
     if harness == "opencode":
         return Location(harness, xdg_config_home(home) / "opencode" / "AGENTS.md", MANAGED_BLOCK)
+    if harness == "mistral-vibe":
+        return Location(harness, vibe_home(home) / "AGENTS.md", MANAGED_BLOCK)
     raise RoutingError(f"{harness} has no always-loaded routing location")
 
 

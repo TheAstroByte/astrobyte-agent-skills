@@ -80,6 +80,7 @@ class Harness:
 HARNESSES: dict[str, Harness] = {
     "codex": Harness("codex", "codex", (".codex",), lambda home: home / ".agents" / "skills"),
     "opencode": Harness("opencode", "opencode", (".config/opencode",), lambda home: home / ".agents" / "skills"),
+    "mistral-vibe": Harness("mistral-vibe", "vibe", (".vibe",), lambda home: home / ".agents" / "skills"),
     "cursor": Harness("cursor", "cursor", (".cursor",), lambda home: home / ".cursor" / "skills"),
     "claude": Harness("claude", "claude", (".claude",), lambda home: routing.claude_root(home) / "skills"),
     "hermes": Harness("hermes", "hermes", (".hermes",), lambda home: home / ".hermes" / "skills" / "astrobyte"),
@@ -602,7 +603,7 @@ def destination_groups(harnesses: list[str], home: Path) -> dict[Path, list[str]
 
 def legacy_roots(harnesses: list[str], home: Path) -> list[Path]:
     roots: list[Path] = []
-    if "codex" in harnesses or "opencode" in harnesses:
+    if "codex" in harnesses or "opencode" in harnesses or "mistral-vibe" in harnesses:
         roots.append(home / ".agents" / "skills")
     if "codex" in harnesses:
         roots.append(home / ".codex" / "skills")

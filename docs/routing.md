@@ -11,7 +11,7 @@ Clone the source and run the installer from it. Read access over HTTPS or SSH is
 ```bash
 git clone https://github.com/TheAstroByte/astrobyte-agent-skills.git
 cd astrobyte-agent-skills
-python3 scripts/install.py --harnesses cursor,codex,opencode,claude
+python3 scripts/install.py --harnesses cursor,codex,opencode,claude,mistral-vibe
 ```
 
 The installer previews every skill and routing change, then asks once. Add `--dry-run` to preview without writing, or `--yes` after you have approved the exact plan.
@@ -28,6 +28,7 @@ Routing is installed when the selection contains `astrobyte-mode`, `astrobyte-re
 | Claude Code | `<claude root>/rules/astrobyte-routing.md` | Whole file | `CLAUDE_CONFIG_DIR` sets the root; skills move with it |
 | Codex | `<codex home>/AGENTS.md` | Marked block | `CODEX_HOME` |
 | OpenCode | `<config home>/opencode/AGENTS.md` | Marked block | `XDG_CONFIG_HOME` |
+| Mistral Vibe | `<vibe home>/AGENTS.md` | Marked block | `VIBE_HOME` sets the home; skills stay in `~/.agents/skills` |
 | Workspace (opt-in) | `<root>/AGENTS.md` | Marked block | `--workspace-root <root>` |
 | Hermes | None | Skills only | Invoke `astrobyte-mode` explicitly |
 
@@ -76,7 +77,7 @@ The manifest records a routing mode that later runs respect:
 
 `--remove-routing --harnesses <name>` removes that harness's routing and remembers the choice. `--skills-only` never removes routing. A harness that is no longer selected keeps its routing until you remove it.
 
-`--uninstall --harnesses <name>` removes that harness's routing and its claim on each skill copy. Codex and OpenCode share `~/.agents/skills`; a copy there moves to backups only when neither still uses it. `--uninstall --all` removes every managed skill copy and routing target. Both keep backups, machine config, and preferences. `--purge-state` then removes the manifest, config, preferences, and profile snapshots. It refuses while managed targets or Astrobyte markers at the known routing locations remain, and always leaves backups.
+`--uninstall --harnesses <name>` removes that harness's routing and its claim on each skill copy. Codex, OpenCode, and Mistral Vibe share `~/.agents/skills`; a copy there moves to backups only when none of them still uses it. `--uninstall --all` removes every managed skill copy and routing target. Both keep backups, machine config, and preferences. `--purge-state` then removes the manifest, config, preferences, and profile snapshots. It refuses while managed targets or Astrobyte markers at the known routing locations remain, and always leaves backups.
 
 Backups live under `~/.config/astrobyte-agent-skills/backups/<timestamp>/` unless `ASTROBYTE_CONFIG_HOME` points elsewhere.
 
@@ -91,7 +92,7 @@ An installation containing several changes is not one transaction. Earlier compl
 - `missing` or `drifted` skill copies;
 - `differs from this checkout` when the checkout running the check has different skill sources from the ones installed (a newer or older checkout, or local edits);
 - `source provenance unknown; reinstall to migrate` for manifests written before version 0.5.0, and a note naming skills kept from such an install by a partial reinstall;
-- `skills not at the active <harness> location` and `routing not at the active <harness> location` when `CLAUDE_CONFIG_DIR`, `CODEX_HOME`, or `XDG_CONFIG_HOME` now points somewhere other than the recorded install, and `routing not recorded for workspace root` when a recorded workspace root lost its routing record;
+- `skills not at the active <harness> location` and `routing not at the active <harness> location` when `CLAUDE_CONFIG_DIR`, `CODEX_HOME`, `VIBE_HOME`, or `XDG_CONFIG_HOME` now points somewhere other than the recorded install, and `routing not recorded for workspace root` when a recorded workspace root lost its routing record;
 - `routing missing`, `routing drifted`, `routing differs from this checkout`, and `routing unsafe`, including any Astrobyte marker other than the exact current ones;
 - `inactive: shadowed` when a non-empty `AGENTS.override.md` in the Codex home hides the managed `AGENTS.md`.
 
@@ -106,6 +107,7 @@ Routing is advisory. It puts the right pointer in front of the agent at the star
 - Cursor's local rule applies only to the desktop app on this machine.
 - Cursor personal skill sync copies `~/.cursor/skills` to Cloud Agents. It does not copy `~/.cursor/rules` or any `AGENTS.md`. For Cloud Agents, paste the body of `templates/routing.md` into a User Rule in Cursor's Customize → Rules. Once that account rule loads locally too, remove the duplicate local rule with `--remove-routing --harnesses cursor`.
 - Codex, OpenCode, and Claude Code read their global files on this machine only.
+- Mistral Vibe loads `~/.vibe/AGENTS.md` at the start of every session on this machine, plus each project `AGENTS.md` from the project root up through the trust chain, so the managed block in `<vibe home>/AGENTS.md` reaches every local session. Project-local `.vibe/skills/` and `.agents/skills/` copies additionally need a trusted folder.
 - Hermes has no always-loaded routing location yet. Its adapter must define and verify one before the installer supports it.
 
 ## Troubleshooting
