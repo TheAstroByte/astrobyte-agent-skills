@@ -285,7 +285,8 @@
         "references/configuration.md",
         "references/reviewer-dispatch.md",
         "scripts/runtime_config.py",
-        "scripts/preferences.py"
+        "scripts/preferences.py",
+        "scripts/reviewer_state.py"
       ]
     },
     "astrobyte-recall": {"source": "astrobyte", "tier": "core", "derived_from": ["pstack:recall", "mattpocock:handoff"]},

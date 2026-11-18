@@ -1,6 +1,6 @@
 # Review loop
 
-This method runs inside the existing `../astrobyte-review/SKILL.md` procedure. It does not add a second gate. Strongly recommend the newest offered Sol reviewer at the host's default effort; use another reviewer only when the operator's current instruction or recorded preference explicitly selects it.
+This method runs inside the existing `../astrobyte-review/SKILL.md` procedure. It does not add a second gate. The reviewer is the one `astrobyte-review` resolves: an explicit requirement, else the saved choice, else on first use the operator confirms a recommended Sol model or picks another before the first review call. Use the host's default effort unless a preference sets it.
 
 1. Fix the comparison base, complete diff or artifact set, intent, delivery mode, excluded scope, and available verification. Account for untracked and user-owned work without including unrelated changes.
 2. Give one read-only reviewer that brief. Require the existing first-line `PASS` or `BLOCK` verdict with findings and locations. The reviewer neither edits nor starts other reviewers. Keep scoped files stable while it reviews.

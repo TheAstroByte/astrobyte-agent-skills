@@ -36,7 +36,9 @@ Choose your own harness or selected harnesses. Adding a personal preference does
 
 Selecting `review-loop` changes how the personal independent review gate runs. It does not start council or add a second mandatory review.
 
-Sol is strongly recommended wherever available. An alternative reviewer requires an explicit choice supported by the current host.
+### Reviewer choice on first use
+
+The first review on a host asks which model reviews. The agent lists the models the host actually offers, recommends the newest Sol, and waits for you to confirm or pick another independent reviewer. The answer is saved per harness with `astrobyte-review`'s `scripts/reviewer_state.py` and reused while its route is still offered. A reviewer named in the task, project instructions, or machine configuration skips the question. A missing route asks again; it never falls back silently.
 
 ### Earlier names
 
