@@ -23,7 +23,7 @@ When requested differences include extra capabilities, select the relevant catal
 
 Configure only the requested harnesses. Recommend Sol for independent review when available. A different reviewer requires the operator's explicit choice; a model name does not establish access. Defer workflow-specific model setup until that workflow is actually invoked.
 
-For requested PR completion, Sol-loop, council, or continuation personalization, read the source's `docs/pr-workflows.md`. Offer the optional `astrobyte-pr-workflows` package and only the requested reusable choices. Keep finish, council, and takeover explicit-only; both finish names leave work unmerged. Save no guessed council members during adoption. Select actual models on first council use and resolve missing repository review policy on first relevant PR task.
+For requested PR completion, review-loop, council, or continuation personalization, read the source's `docs/pr-workflows.md`. Offer the optional `astrobyte-workflows` package and only the requested reusable choices. Keep finish, council, and takeover explicit-only; both finish names leave work unmerged. Save no guessed council members during adoption. Select actual models on first council use and resolve missing repository review policy on first relevant PR task.
 
 Applying one skill to a document is not installation of the requested selection. Report inaccessible source files as an access blocker rather than claiming setup is complete.
 

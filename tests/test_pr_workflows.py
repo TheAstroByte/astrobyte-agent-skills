@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import os
 from pathlib import Path
+from unittest.mock import patch
 import shutil
 import subprocess
 import sys
@@ -11,7 +12,7 @@ import unittest
 
 
 ROOT = Path(__file__).resolve().parents[1]
-PACKAGE = ROOT / "skills" / "astrobyte-pr-workflows"
+PACKAGE = ROOT / "skills" / "astrobyte-workflows"
 SCRIPT = PACKAGE / "scripts" / "workflow_state.py"
 
 
@@ -147,19 +148,19 @@ class PRWorkflowStateTests(unittest.TestCase):
         preferences = {
             "schema_version": 1,
             "baseline": {"handle": "astrobyte", "repository_version": "0.5.0"},
-            "overrides": {"pr_workflows": {"review_method": "sol-loop", "council_round_limit": 4, "t3": True}},
+            "overrides": {"pr_workflows": {"review_method": "review-loop", "council_round_limit": 4, "t3": True}},
         }
         (mode / "references/preferences.json").write_text(json.dumps(preferences))
         project = self.root / "project"
         (project / ".astrobyte").mkdir(parents=True)
         (project / ".astrobyte/config.json").write_text(json.dumps({"pr_workflows": {"council_round_limit": 2}}))
         effective = self.cli("policy", "--project", str(project), script=copied / "scripts/workflow_state.py")
-        self.assertEqual(effective["pr_workflows"], {"review_method": "sol-loop", "council_round_limit": 2, "t3": True})
+        self.assertEqual(effective["pr_workflows"], {"review_method": "review-loop", "council_round_limit": 2, "t3": True})
         self.assertEqual(effective["sources"]["review_method"], "portable-personal")
         self.assertEqual(effective["sources"]["council_round_limit"], "project")
 
     def test_missing_runtime_dependency_is_an_error_not_default_policy(self) -> None:
-        copied = self.root / "isolated/astrobyte-pr-workflows"
+        copied = self.root / "isolated/astrobyte-workflows"
         shutil.copytree(PACKAGE, copied)
         self.cli("policy", script=copied / "scripts/workflow_state.py", expected=1)
         self.assertFalse(self.state.exists())
@@ -173,14 +174,14 @@ class PRWorkflowStateTests(unittest.TestCase):
             self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
 
         install()
-        target = home / ".cursor/skills/astrobyte-pr-workflows"
+        target = home / ".cursor/skills/astrobyte-workflows"
         self.assertFalse(target.exists())
         delta = {
             "schema_version": 1,
             "baseline": {"handle": "astrobyte", "repository_version": "0.5.0"},
             "overrides": {
-                "optional_skills": ["astrobyte-pr-workflows"],
-                "pr_workflows": {"review_method": "sol-loop", "council_round_limit": 3, "t3": True},
+                "optional_skills": ["astrobyte-workflows"],
+                "pr_workflows": {"review_method": "review-loop", "council_round_limit": 3, "t3": True},
             },
         }
         reviewed = self.input_file("reviewed-personal-options.json", delta)
@@ -194,6 +195,64 @@ class PRWorkflowStateTests(unittest.TestCase):
         before = (target / "references/preferences.json").read_bytes()
         install()
         self.assertEqual((target / "references/preferences.json").read_bytes(), before)
+
+
+    def legacy_install(self, home: Path) -> tuple[Path, Path]:
+        """Create a pre-rename installation using the installer's own state formats.
+
+        Self-contained, so it runs from any checkout, including shallow clones and archives.
+        """
+        command = [sys.executable, "-B", str(ROOT / "scripts/install.py"), "--harnesses", "cursor", "--home", str(home),
+                   "--skills", "astrobyte-mode,astrobyte-workflows", "--yes"]
+        result = subprocess.run(command, cwd=self.root, env=self.env, capture_output=True, text=True)
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        new_target = home / ".cursor/skills/astrobyte-workflows"
+        old_target = home / ".cursor/skills/astrobyte-pr-workflows"
+        new_target.rename(old_target)
+        manifest_path = self.state / "install-manifest.json"
+        manifest = json.loads(manifest_path.read_text())
+        manifest["targets"][str(old_target)] = {**manifest["targets"].pop(str(new_target)), "skill": "astrobyte-pr-workflows"}
+        manifest_path.write_text(json.dumps(manifest))
+        config_path = self.state / "config.json"
+        config = json.loads(config_path.read_text())
+        config["selected_skills"] = ["astrobyte-mode", "astrobyte-pr-workflows"]
+        config_path.write_text(json.dumps(config))
+        legacy = {
+            "schema_version": 1,
+            "baseline": {"handle": "astrobyte", "repository_version": "0.5.0"},
+            "overrides": {"pr_workflows": {"review_method": "sol-loop", "council_round_limit": 3, "t3": False}},
+        }
+        (self.state / "preferences.json").write_text(json.dumps(legacy))
+        return old_target, new_target
+
+    def test_legacy_install_upgrades_in_place(self) -> None:
+        home = self.root / "legacy-home"
+        old_target, new_target = self.legacy_install(home)
+        upgrade = subprocess.run(
+            [sys.executable, "-B", str(ROOT / "scripts/install.py"), "--harnesses", "cursor", "--home", str(home), "--yes"],
+            cwd=self.root, env=self.env, capture_output=True, text=True,
+        )
+        self.assertEqual(upgrade.returncode, 0, upgrade.stdout + upgrade.stderr)
+        self.assertIn("archive-renamed", upgrade.stdout)
+        self.assertFalse(old_target.exists())
+        self.assertTrue((new_target / "SKILL.md").is_file())
+        self.assertTrue(list((self.state / "backups").rglob("astrobyte-pr-workflows/SKILL.md")))
+        manifest = json.loads((self.state / "install-manifest.json").read_text())
+        self.assertNotIn(str(old_target), manifest["targets"])
+        self.assertIn(str(new_target), manifest["targets"])
+        isolated = {key: value for key, value in self.env.items() if not key.startswith("ASTROBYTE_")}
+        effective = self.cli("policy", script=new_target / "scripts/workflow_state.py", env={**isolated, "ASTROBYTE_CONFIG": str(self.state)})
+        self.assertEqual(effective["pr_workflows"]["review_method"], "review-loop")
+
+    def test_bootstrap_keeps_a_legacy_workflow_it_does_not_replace(self) -> None:
+        from scripts import bootstrap
+        home = self.root / "legacy-home"
+        old_target, new_target = self.legacy_install(home)
+        with patch.dict(os.environ, self.env, clear=True):
+            plan = bootstrap.build_bootstrap_plan(["cursor"], home)
+        self.assertFalse([item for item in plan if item["status"].startswith("archive-")], plan)
+        self.assertTrue(old_target.is_dir())
+        self.assertFalse(new_target.exists())
 
 
 if __name__ == "__main__":

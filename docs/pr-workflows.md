@@ -1,6 +1,6 @@
 # Optional PR workflows
 
-The optional `astrobyte-pr-workflows` package adds deliberate PR completion, review, and continuation operations. It is absent from every default bundle. A normal quick install keeps its existing behavior.
+The optional `astrobyte-workflows` package adds deliberate PR completion, review, and continuation operations. It is absent from every default bundle. A normal quick install keeps its existing behavior.
 
 ## Select it during personalization
 
@@ -14,9 +14,9 @@ Ask for the optional PR workflows, or review a delta such as:
     "repository_version": "0.5.0"
   },
   "overrides": {
-    "optional_skills": ["astrobyte-pr-workflows"],
+    "optional_skills": ["astrobyte-workflows"],
     "pr_workflows": {
-      "review_method": "sol-loop",
+      "review_method": "review-loop",
       "council_round_limit": 3,
       "t3": false
     }
@@ -34,24 +34,30 @@ python3 scripts/install.py --harnesses cursor --preferences approved-preferences
 
 Choose your own harness or selected harnesses. Adding a personal preference does not require a full interview or a personal repository. Exact council models and routes remain local. Add `--portable-preferences` only after reviewing and approving the reusable rules for export. Selected packages and their contained resources travel with skill sync; credentials and local setup answers do not.
 
-Selecting `sol-loop` changes how the personal independent review gate runs. It does not start council or add a second mandatory review. Sol is strongly recommended wherever available. An alternative reviewer requires an explicit choice supported by the current host.
+Selecting `review-loop` changes how the personal independent review gate runs. It does not start council or add a second mandatory review.
+
+Sol is strongly recommended wherever available. An alternative reviewer requires an explicit choice supported by the current host.
+
+### Earlier names
+
+This package was called `astrobyte-pr-workflows`, and the review loop was `sol-loop`. Saved selections and preferences that use the old names keep working: the installer maps the package name and archives the old installed directory, and `sol-loop` resolves to `review-loop`. Invoke the package by its new name; hosts do not alias the old skill name. Personal free-text rules that mention the old path are not rewritten; update them yourself.
 
 ## Invoke an operation
 
-Invoke `astrobyte-pr-workflows` with the requested operation using your host's skill syntax. For example, in Codex:
+Invoke `astrobyte-workflows` with the requested operation using your host's skill syntax. For example, in Codex:
 
 ```text
-Use $astrobyte-pr-workflows full-stop for this change.
-Use $astrobyte-pr-workflows council to review this design.
-Use $astrobyte-pr-workflows takeover to continue this PR.
+Use $astrobyte-workflows full-stop for this change.
+Use $astrobyte-workflows council to review this design.
+Use $astrobyte-workflows takeover to continue this PR.
 ```
 
 The package recognizes operation names, not nine separate installed skills. Your personal agreement may also map a deliberate natural-language request to this entrypoint. Mentioning or discussing an operation does not invoke it.
 
 | Operation | Result |
 | --- | --- |
-| `full-stop`, `full-send` | Complete the requested task with proof, scoped Sol review, and any authorized PR feedback work. Leave it unmerged and report its actual status. Both names share this behavior. |
-| `sol-loop` | Review the current change with a stable findings ledger, evidence-backed dispositions, bounded follow-up rounds, and the existing independent verdict. |
+| `full-stop`, `full-send` | Complete the requested task with proof, a review loop, and any authorized PR feedback work. Leave it unmerged and report its actual status. Both names share this behavior. |
+| `review-loop` | Review the current change with a stable findings ledger, evidence-backed dispositions, bounded follow-up rounds, and the existing independent verdict. |
 | `council` | Obtain independent feedback from explicitly selected models and report agreement or unresolved differences. |
 | `takeover` | Verify inherited work and continue the original goal while preserving contributor credit. |
 | `modernize` | Reassess an old PR's purpose before updating its branch, reworking it, or recommending closure. |
@@ -75,7 +81,7 @@ The package's `scripts/workflow_state.py --help` describes the local setup helpe
 
 Finish the question or runnable path the user asked for. Defer uncommon, unobserved error handling unless it affects the actual experiment or the user requests it. Use cheap tests when they help learning. Include the mode and acceptance evidence in review briefs so Sol and council apply the same scope.
 
-An explicit finish operation requests scoped Sol review. It does not silently turn a prototype into a durable implementation, require a PR that was not requested, or create a merge path.
+An explicit finish operation requests a review loop. It does not silently turn a prototype into a durable implementation, require a PR that was not requested, or create a merge path.
 
 ## Optional T3 use
 

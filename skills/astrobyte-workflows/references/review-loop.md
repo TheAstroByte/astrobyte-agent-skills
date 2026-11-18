@@ -1,4 +1,4 @@
-# Scoped Sol review
+# Review loop
 
 This method runs inside the existing `../astrobyte-review/SKILL.md` procedure. It does not add a second gate. Strongly recommend the newest offered Sol reviewer at the host's default effort; use another reviewer only when the operator's current instruction or recorded preference explicitly selects it.
 
@@ -10,4 +10,4 @@ This method runs inside the existing `../astrobyte-review/SKILL.md` procedure. I
 
 Start with three total rounds and retain the existing gate's three-blocked-round stop. When the budget ends or a material disagreement persists, present the evidence and ask whether to extend for a bounded number of rounds or finish with the issue unresolved. Timeouts, unclear replies, disagreement, and budget exhaustion are not approval.
 
-Only a current `PASS` satisfying the existing gate permits the action it protects. An explicit Sol-loop request alone does not authorize editing, pushing, or opening a PR. Keep the ledger, verified model identity, rounds, and available usage in the operator report unless repository policy requests them in the PR.
+Only a current `PASS` satisfying the existing gate permits the action it protects. An explicit review-loop request alone does not authorize editing, pushing, or opening a PR. Keep the ledger, verified model identity, rounds, and available usage in the operator report unless repository policy requests them in the PR.

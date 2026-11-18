@@ -125,10 +125,10 @@ def resolve(skill: Path, project: Path, home: Path) -> dict[str, Any]:
     if pr_workflows:
         result["pr_workflows"] = pr_workflows
         result["pr_workflow_sources"] = pr_workflow_sources
-        if pr_workflows.get("review_method") == "sol-loop":
+        if pr_workflows.get("review_method") == "review-loop":
             instruction = (
-                "Use the selected Sol-loop method from "
-                "../astrobyte-pr-workflows/references/sol-loop.md, resolved from this skill directory. "
+                "Use the selected review-loop method from "
+                "../astrobyte-workflows/references/review-loop.md, resolved from this skill directory. "
                 "Keep the configured reviewer, read-only dispatch, literal PASS requirement, and existing review gate. "
                 "A missing optional package leaves this requested method pending; do not silently substitute."
             )

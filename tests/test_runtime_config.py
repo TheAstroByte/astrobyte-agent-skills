@@ -142,7 +142,7 @@ class RuntimeConfigTests(unittest.TestCase):
             return {"schema_version": 1, "baseline": {"handle": "astrobyte", "repository_version": "0.5.0"}, "overrides": {"pr_workflows": options}}
 
         state = self.home / ".config/astrobyte-agent-skills"
-        self.write(self.skill / "references/preferences.json", delta({"review_method": "sol-loop", "council_round_limit": 2, "t3": True}))
+        self.write(self.skill / "references/preferences.json", delta({"review_method": "review-loop", "council_round_limit": 2, "t3": True}))
         self.write(state / "preferences.json", delta({"council_round_limit": 3}))
         self.write(state / "config.json", {"pr_workflows": {"t3": False}})
         self.write(self.project / ".astrobyte/config.json", {"pr_workflows": {"review_method": "baseline", "council_round_limit": 4}})
@@ -153,7 +153,7 @@ class RuntimeConfigTests(unittest.TestCase):
         (self.project / ".astrobyte/config.json").unlink()
         result = resolve(self.skill, self.project, self.home)
         self.assertEqual(result["pr_workflows"]["council_round_limit"], 3)
-        self.assertIn("../astrobyte-pr-workflows/references/sol-loop.md", result["review_instructions"])
+        self.assertIn("../astrobyte-workflows/references/review-loop.md", result["review_instructions"])
         self.assertIn("literal PASS", result["review_instructions"])
         self.assertEqual(sum("review_instructions" in layer for layer in result["working_agreement_layers"]), 1)
 

@@ -127,8 +127,8 @@ class PackageTests(unittest.TestCase):
             "derived": (["--skills", "astrobyte-review"], {
                 "astrobyte-review": ["LICENSE", "licenses/pstack-MIT.txt", "licenses/mattpocock-skills-MIT.txt"],
             }),
-            "optional": (["--skills", "astrobyte-pr-workflows"], {
-                "astrobyte-pr-workflows": ["LICENSE", "skills/astrobyte-pr-workflows/LICENSE.tstack.txt"],
+            "optional": (["--skills", "astrobyte-workflows"], {
+                "astrobyte-workflows": ["LICENSE", "skills/astrobyte-workflows/LICENSE.tstack.txt"],
             }),
         }
         for name, (selection, packages) in cases.items():
