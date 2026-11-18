@@ -1,8 +1,5 @@
 {
   "name": "astrobyte-reliability",
   "version": "0.6.0",
-  "description": "Testing, debugging, security, and operations specialists for Astrobyte.",
-  "dependencies": [
-    "astrobyte"
-  ]
+  "description": "Testing, debugging, security, and operations specialists for Astrobyte."
 }

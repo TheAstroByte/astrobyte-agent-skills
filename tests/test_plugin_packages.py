@@ -76,10 +76,11 @@ class PluginPackageTests(unittest.TestCase):
             with self.subTest(skill=str(skill_md.relative_to(self.plugins))):
                 self.assertLessEqual(len(description(skill_md.read_text(encoding="utf-8"))), 200)
 
-    def test_optional_packages_depend_on_core(self) -> None:
+    def test_optional_packages_require_core_without_pulling_the_core_plugin(self) -> None:
         for package in ("astrobyte-web", "astrobyte-writing", "astrobyte-reliability", "astrobyte-continuity"):
+            self.assertEqual(self.catalog["packages"][package]["depends_on"], ["astrobyte"])
             manifest = json.loads((self.plugins / package / ".claude-plugin/plugin.json").read_text(encoding="utf-8"))
-            self.assertEqual(manifest["dependencies"], ["astrobyte"])
+            self.assertNotIn("dependencies", manifest)
         marketplace = json.loads((REPO_ROOT / ".claude-plugin/marketplace.json").read_text(encoding="utf-8"))
         self.assertEqual({item["name"] for item in marketplace["plugins"]}, set(self.catalog["packages"]))
 

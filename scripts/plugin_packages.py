@@ -151,9 +151,9 @@ def build(root: Path, output: Path) -> list[str]:
             for raw in re.findall(r"`(references/[\w./-]+\.(?:md|json))`", text):
                 if not (destination / raw).is_file():
                     errors.append(f"plugins/{name}/skills/{skill}: missing backtick resource {raw}")
+        # depends_on is checked above but not emitted: core is installed natively (see README),
+        # so an optional plugin must not pull a second, plugin copy of core into the session.
         manifest = {"name": name, "version": version, "description": package["description"]}
-        if package.get("depends_on"):
-            manifest["dependencies"] = package["depends_on"]
         (target / ".claude-plugin").mkdir(parents=True, exist_ok=True)
         (target / ".claude-plugin" / "plugin.json").write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
         marketplace["plugins"].append({"name": name, "source": f"./plugins/{name}", "description": package["description"]})

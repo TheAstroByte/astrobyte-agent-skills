@@ -1,8 +1,5 @@
 {
   "name": "astrobyte-continuity",
   "version": "0.6.0",
-  "description": "Resume, handoff, design-continuity, and PR-feedback specialists for Astrobyte.",
-  "dependencies": [
-    "astrobyte"
-  ]
+  "description": "Resume, handoff, design-continuity, and PR-feedback specialists for Astrobyte."
 }

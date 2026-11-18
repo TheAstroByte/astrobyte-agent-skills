@@ -33,21 +33,24 @@ Start a fresh agent session and ask it to use `astrobyte-mode` for a bounded tas
 
 This repository is also a Claude Code plugin marketplace. `plugins/` holds generated packages built from `skills/` by `scripts/plugin_packages.py`; edit `skills/`, `catalog.json` `packages`, or `plugins/overlays.json`, then regenerate.
 
+Install core with the native installer above (`--harnesses claude`, or `sbx skills import` in Docker Sandboxes). Then add any optional packages as plugins:
+
 ```bash
 claude plugin marketplace add TheAstroByte/astrobyte-agent-skills
-claude plugin install astrobyte@astrobyte-skills     # core
-claude plugin install astrobyte-web@astrobyte-skills # optional; installs core too
+claude plugin install astrobyte-web@astrobyte-skills
 ```
 
 | Package | Contents |
 | --- | --- |
-| `astrobyte` | Core. The model sees `astrobyte-mode` and `unslop`; review, Git attribution, council, review loop, and the router's planning skills stay hidden and load through the router or `/astrobyte:<skill>`. |
+| `astrobyte` | Core as a plugin. The model sees `astrobyte-mode` and `unslop`; review, Git attribution, council, review loop, and the router's planning skills stay hidden and load through the router or `/astrobyte:<skill>`. |
 | `astrobyte-web` | Frontend, browser testing, TypeScript, and API design. |
 | `astrobyte-writing` | Technical writing, research, and writing for agents. |
 | `astrobyte-reliability` | TDD, debugging, hermetic tests, security, observability, performance, CI/CD, migrations, launch, and source-driven development. |
 | `astrobyte-continuity` | Recall, handoff, PR feedback, project verification, blast radius, grilling, domain modeling, and related checks. |
 
-Packages install only when you choose them. To update, run `claude plugin marketplace update astrobyte-skills`, then `claude plugin update <package>@astrobyte-skills`, and restart the session. Install either the plugins or the native skills for Claude Code, not both, or the same skills appear twice.
+Optional packages need core but do not install the core plugin themselves, so they work beside a native core. Use one source of core, either native or the `astrobyte` plugin, never both, or its skills appear twice. In Docker Sandboxes, prefer native core: a local test install of the core plugin received a masked skill directory and could not read its own references, although a Git-sourced install worked.
+
+Packages install only when you choose them. To update, run `claude plugin marketplace update astrobyte-skills`, then `claude plugin update <package>@astrobyte-skills`, and restart the session.
 
 ## Keep the defaults, customize locally
 
