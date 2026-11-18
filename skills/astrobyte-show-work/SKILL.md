@@ -1,6 +1,6 @@
 ---
 name: astrobyte-show-work
-description: Keep a compact, reviewable decision trail for experiments, unattended runs, migrations, evaluations, or multi-phase work. Use when a reviewer will need to understand what changed, why, what evidence was observed, and what was accepted or rejected.
+description: Keep a short decision trail of what changed, why, and the evidence. Use for experiments, migrations, evals, unattended runs, or multi-phase work.
 metadata:
   opencode/autoinvoke: "false"
 ---

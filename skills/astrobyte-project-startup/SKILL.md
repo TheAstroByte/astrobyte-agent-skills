@@ -1,6 +1,6 @@
 ---
 name: astrobyte-project-startup
-description: Establish or revise a project's stack and operating assumptions before substantial implementation. Use for greenfield setup, repository bootstrap, prototype kickoff, architecture startup, or when project stack choices are materially unresolved.
+description: Settle a project's stack and working assumptions before building. Use for new repos, repository bootstrap, prototype kickoff, or unresolved stack choices.
 ---
 
 # Astrobyte project startup

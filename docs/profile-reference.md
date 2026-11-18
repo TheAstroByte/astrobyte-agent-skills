@@ -20,9 +20,9 @@ New personalization uses `templates/preferences.json`, with schema version 1. `b
 
 `overrides.optional_skills` selects additional cataloged optional packages. Omit it to preserve the machine's existing selection; an explicit list replaces that selection for the approved installation. An empty list selects none. The preview includes archiving previously selected managed optional packages removed by that explicit list. Unrelated installed skills remain untouched. Unknown names and packages outside the optional tier are rejected before writes.
 
-`overrides.pr_workflows` holds reusable optional PR-workflow choices: `review_method` is `baseline` or `sol-loop`, `council_round_limit` is an integer from 1 to 20, and `t3` is a boolean. Omitted fields inherit their configured values. These choices do not grant authority, invoke a command, configure model access, or install a package by themselves. Exact model routes stay local.
+`overrides.pr_workflows` holds reusable optional PR-workflow choices: `review_method` is `baseline` or `review-loop`, `council_round_limit` is an integer from 1 to 20, and `t3` is a boolean. Omitted fields inherit their configured values. These choices do not grant authority, invoke a command, configure model access, or install a package by themselves. Exact model routes stay local.
 
-The [optional PR workflows](pr-workflows.md) package supplies the Sol-loop method and explicit commands. Select the package alongside `review_method: sol-loop`; requesting a method whose package is missing leaves that review pending. Selecting the method does not invoke council or another finish operation.
+The [optional PR workflows](pr-workflows.md) package supplies the review-loop method and explicit commands. Select the package alongside `review_method: review-loop`; requesting a method whose package is missing leaves that review pending. Selecting the method does not invoke council or another finish operation.
 
 Apply a reviewed file with `python3 scripts/install.py --quick --harnesses cursor --preferences <file>`. The installer stores it locally beside `config.json`. Local-only personalization is a complete result. Repository creation and publication are separate choices.
 

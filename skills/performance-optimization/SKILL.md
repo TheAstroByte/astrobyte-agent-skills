@@ -1,6 +1,6 @@
 ---
 name: performance-optimization
-description: Optimizes application performance across frontend, backend, queries, and databases. Use when performance requirements exist, when you suspect performance regressions, when Core Web Vitals or load times need improvement, when N+1 query patterns need fixing, or when profiling reveals bottlenecks.
+description: Improve frontend, backend, query, and database performance. Use for performance requirements, suspected regressions, Core Web Vitals, N+1 queries, or profiling.
 ---
 
 # Performance Optimization
@@ -349,7 +349,7 @@ npx lhci autorun
 
 ## See Also
 
-For detailed performance checklists, optimization commands, and anti-pattern reference, see `../../references/performance-checklist.md`.
+For detailed performance checklists, optimization commands, and anti-pattern reference, see `references/performance-checklist.md`.
 
 
 ## Common Rationalizations

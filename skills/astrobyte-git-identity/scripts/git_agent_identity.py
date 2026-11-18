@@ -13,10 +13,17 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Sequence
 
-from preferences import inherited_values, validate_preferences
+try:
+    from preferences import inherited_values, validate_preferences
+except ModuleNotFoundError:
+    # `python3 -I` drops the script directory from sys.path; restore only that directory.
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    from preferences import inherited_values, validate_preferences
 
 
 TRAILER_PATTERN = re.compile(r"^[A-Za-z][A-Za-z0-9-]*$")
+# Product names agents commonly pass for themselves, mapped to their policy keys.
+HARNESS_ALIASES = {"claude-code": "claude", "cursor-agent": "cursor"}
 
 
 @dataclass(frozen=True)
@@ -96,6 +103,7 @@ def environment_identity() -> Identity:
 
 
 def load_policy(path: Path, harness: str, *, explicit: bool = False) -> Policy:
+    harness = HARNESS_ALIASES.get(harness, harness)
     reference = Path(__file__).resolve().parents[1] / "references"
     baseline_policy = load_object(reference / "git-policy.json")["git_identity"]
     for preferences_path in (reference / "preferences.json", path.parent / "preferences.json"):

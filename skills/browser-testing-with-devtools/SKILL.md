@@ -1,6 +1,6 @@
 ---
 name: browser-testing-with-devtools
-description: Inspect and test browser behavior through an available Chrome DevTools MCP connection. Use that connection for DOM, console, network, performance, and visual checks. Use another available browser capability when this integration is absent; configure it only when requested.
+description: "Test browser behavior via an available Chrome DevTools MCP connection: DOM, console, network, performance, visuals. If absent, use another browser route; set it up only on request."
 ---
 
 # Browser Testing with DevTools

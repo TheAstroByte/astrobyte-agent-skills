@@ -32,6 +32,18 @@ class RuntimeConfigTests(unittest.TestCase):
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(json.dumps(value))
 
+    def test_packaged_command_runs_in_isolated_python_mode(self) -> None:
+        for name in ("astrobyte-mode", "astrobyte-review", "astrobyte-project-startup"):
+            skill = self.root / name
+            if not skill.exists():
+                shutil.copytree(REPO_ROOT / "skills" / name, skill)
+            result = subprocess.run(
+                [sys.executable, "-I", "-B", str(skill / "scripts/runtime_config.py"), "--project", str(self.project)],
+                cwd=self.root, env={"HOME": str(self.home)}, capture_output=True, text=True,
+            )
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertEqual(json.loads(result.stdout)["preferences"]["delivery_mode"], "durable")
+
     def test_packaged_command_runs_without_source_or_config(self) -> None:
         for name in ("astrobyte-mode", "astrobyte-review", "astrobyte-project-startup"):
             skill = self.root / name
@@ -130,7 +142,7 @@ class RuntimeConfigTests(unittest.TestCase):
             return {"schema_version": 1, "baseline": {"handle": "astrobyte", "repository_version": "0.5.0"}, "overrides": {"pr_workflows": options}}
 
         state = self.home / ".config/astrobyte-agent-skills"
-        self.write(self.skill / "references/preferences.json", delta({"review_method": "sol-loop", "council_round_limit": 2, "t3": True}))
+        self.write(self.skill / "references/preferences.json", delta({"review_method": "review-loop", "council_round_limit": 2, "t3": True}))
         self.write(state / "preferences.json", delta({"council_round_limit": 3}))
         self.write(state / "config.json", {"pr_workflows": {"t3": False}})
         self.write(self.project / ".astrobyte/config.json", {"pr_workflows": {"review_method": "baseline", "council_round_limit": 4}})
@@ -141,7 +153,7 @@ class RuntimeConfigTests(unittest.TestCase):
         (self.project / ".astrobyte/config.json").unlink()
         result = resolve(self.skill, self.project, self.home)
         self.assertEqual(result["pr_workflows"]["council_round_limit"], 3)
-        self.assertIn("../astrobyte-pr-workflows/references/sol-loop.md", result["review_instructions"])
+        self.assertIn("../astrobyte-workflows/references/review-loop.md", result["review_instructions"])
         self.assertIn("literal PASS", result["review_instructions"])
         self.assertEqual(sum("review_instructions" in layer for layer in result["working_agreement_layers"]), 1)
 

@@ -65,7 +65,7 @@ Machine facts, human Git identity, credentials, and paths stay local. Free-text 
 
 Requested personalization can also select optional packages through `overrides.optional_skills`. Ask only about the desired additions and preview them with the personal rules in one plan. The same reviewed delta can be used with an explicitly requested machine interview or answer file. An ordinary default installation adds no optional-package questions.
 
-The [optional PR workflows](pr-workflows.md) provide explicit finish, Sol-loop, council, and continuation operations. Select them only when requested during personalization. Council asks for actual model choices on first use on the current system; adoption can save its round limit and optional T3 preference without pretending provider access has been configured.
+The [optional PR workflows](pr-workflows.md) provide explicit finish, review-loop, council, and continuation operations. Select them only when requested during personalization. Council asks for actual model choices on first use on the current system; adoption can save its round limit and optional T3 preference without pretending provider access has been configured.
 
 Configure only the requested harnesses. One harness is enough for ordinary use; adding another preserves the same portable personal rules and records its local destinations. Reviewer models are separate from installed harnesses. Strongly recommend Sol wherever available, and record an alternative only when the operator explicitly selects it. Installation does not establish access to a provider or start a council.
 

@@ -1,6 +1,6 @@
 ---
 name: astrobyte-architect
-description: Settle data shapes, state transitions, public interfaces, module ownership, and test seams before non-trivial implementation. Use for architecture, API boundaries, new subsystems, shared state, cross-stack features, or designs where early code could lock in the wrong structure.
+description: Settle data shapes, interfaces, ownership, and test seams before building. Use for new subsystems, API boundaries, shared state, or cross-stack features.
 metadata:
   opencode/autoinvoke: "false"
 ---

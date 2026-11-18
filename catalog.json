@@ -31,7 +31,7 @@
     "tstack": {
       "repository": "t3dotgg/tstack",
       "commit": "7de017b3fc9d50c03cf3ecb98fb71e0ca65a78bd",
-      "license_file": "skills/astrobyte-pr-workflows/LICENSE.tstack.txt"
+      "license_file": "skills/astrobyte-workflows/LICENSE.tstack.txt"
     }
   },
   "required_skills": [
@@ -143,6 +143,7 @@
       "shipping-and-launch"
     ]
   },
+  "renamed_skills": {"astrobyte-pr-workflows": "astrobyte-workflows"},
   "superseded_skills": [
     "code-review-and-quality",
     "code-simplification",
@@ -159,7 +160,7 @@
     "using-agent-skills"
   ],
   "skills": {
-    "astrobyte-pr-workflows": {
+    "astrobyte-workflows": {
       "source": "astrobyte",
       "tier": "optional",
       "explicit_only": true,
@@ -183,7 +184,7 @@
       "runtime_resources": [
         "agents/openai.yaml",
         "references/finish.md",
-        "references/sol-loop.md",
+        "references/review-loop.md",
         "references/council.md",
         "references/continuation.md",
         "references/pr-feedback.md",
@@ -284,7 +285,8 @@
         "references/configuration.md",
         "references/reviewer-dispatch.md",
         "scripts/runtime_config.py",
-        "scripts/preferences.py"
+        "scripts/preferences.py",
+        "scripts/reviewer_state.py"
       ]
     },
     "astrobyte-recall": {"source": "astrobyte", "tier": "core", "derived_from": ["pstack:recall", "mattpocock:handoff"]},
@@ -306,7 +308,7 @@
     "ci-cd-and-automation": {"source": "addyosmani", "tier": "full"},
     "deprecation-and-migration": {"source": "addyosmani", "tier": "full"},
     "frontend-ui-engineering": {"source": "addyosmani", "tier": "builder"},
-    "frontend-design": {"source": "anthropics", "tier": "builder", "runtime_resources": ["LICENSE.txt"]},
+    "frontend-design": {"source": "anthropics", "tier": "builder", "runtime_resources": ["LICENSE.txt"], "verbatim": true},
     "git-workflow-and-versioning": {
       "source": "addyosmani",
       "tier": "optional",

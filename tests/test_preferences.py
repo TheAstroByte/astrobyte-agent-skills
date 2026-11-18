@@ -163,7 +163,7 @@ class PreferenceTests(unittest.TestCase):
     def test_combined_answer_file_and_personal_delta_preserve_machine_choices(self) -> None:
         self.preferences["overrides"].update({
             "optional_skills": ["git-workflow-and-versioning"],
-            "pr_workflows": {"review_method": "sol-loop", "council_round_limit": 3, "t3": False},
+            "pr_workflows": {"review_method": "review-loop", "council_round_limit": 3, "t3": False},
         })
         self.path.write_text(json.dumps(self.preferences))
         machine = {key: value for key, value in install.quick_answers(self.home, self.profile, ["codex", "opencode"]).items() if not key.startswith("_")}
@@ -185,7 +185,7 @@ class PreferenceTests(unittest.TestCase):
         with patch.dict(os.environ, {"ASTROBYTE_CONFIG": str(self.state)}):
             resolved = resolve(self.home / ".agents/skills/astrobyte-review", self.root, self.home)
         self.assertEqual(resolved["preferences"]["delivery_mode"], "prototype")
-        self.assertEqual(resolved["pr_workflows"]["review_method"], "sol-loop")
+        self.assertEqual(resolved["pr_workflows"]["review_method"], "review-loop")
         self.assertIn("literal PASS", resolved["review_instructions"])
 
     def test_personal_delta_can_seed_an_explicit_interview(self) -> None:
@@ -226,7 +226,7 @@ class PreferenceTests(unittest.TestCase):
         self.assertEqual(install.load_json(path), self.preferences)
 
     def test_personal_workflow_policy_updates_without_becoming_machine_override(self) -> None:
-        self.preferences["overrides"]["pr_workflows"] = {"review_method": "sol-loop", "council_round_limit": 3}
+        self.preferences["overrides"]["pr_workflows"] = {"review_method": "review-loop", "council_round_limit": 3}
         self.path.write_text(json.dumps(self.preferences))
         self.assertEqual(self.apply("--preferences", str(self.path)), 0)
         self.preferences["overrides"]["pr_workflows"]["council_round_limit"] = 5
@@ -237,6 +237,41 @@ class PreferenceTests(unittest.TestCase):
             resolved = resolve(self.home / ".cursor/skills/astrobyte-review", self.root, self.home)
         self.assertEqual(resolved["pr_workflows"]["council_round_limit"], 5)
         self.assertEqual(resolved["pr_workflow_sources"]["council_round_limit"], "personal-delta")
+
+    def test_legacy_review_method_is_normalized_only_after_validation(self) -> None:
+        from scripts.preferences import validate_pr_workflows
+        options = {"review_method": "sol-loop"}
+        validate_pr_workflows(options)
+        self.assertEqual(options, {"review_method": "review-loop"})
+        for malformed in ([], {}, 3, None):
+            with self.subTest(malformed=malformed), self.assertRaises(ValueError):
+                validate_pr_workflows({"review_method": malformed})
+        failing = {"review_method": "sol-loop", "t3": "yes"}
+        with self.assertRaises(ValueError):
+            validate_pr_workflows(failing)
+        self.assertEqual(failing["review_method"], "sol-loop")
+
+    def test_interview_default_maps_a_legacy_saved_selection(self) -> None:
+        config = {"optional_skills": ["astrobyte-pr-workflows"]}
+        self.state.mkdir(parents=True, exist_ok=True)
+        (self.state / "config.json").write_text(json.dumps(config))
+        offered = {}
+
+        class Stop(Exception):
+            pass
+
+        def fake_ask(names, previous):
+            offered["previous"] = previous
+            raise Stop
+
+        with patch("scripts.install.ask_optional_skills", side_effect=fake_ask), \
+             patch("scripts.install.config_dir", return_value=self.state), \
+             patch("builtins.input", return_value=""), \
+             patch("scripts.install.detect_harnesses", return_value=["cursor"]):
+            with self.assertRaises(Stop):
+                install.interactive_answers(self.home, self.profile, self.registry)
+        self.assertEqual(offered["previous"], ["astrobyte-workflows"])
+
 
     def test_invalid_workflow_choices_are_rejected(self) -> None:
         for options in ({"merge": True}, {"models": ["model"]}, {"council_round_limit": True}, {"council_round_limit": 0}, {"council_round_limit": 21}, {"t3": "yes"}, {"review_method": "council"}):

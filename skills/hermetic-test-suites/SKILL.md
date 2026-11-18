@@ -1,6 +1,6 @@
 ---
 name: hermetic-test-suites
-description: Make test suites deterministic across local, CI, clean checkout, repeated, and randomized runs. Use when tests depend on environment variables, repository files, external services, background work, process-global caches, execution order, or leftover state.
+description: Make tests deterministic across local, CI, clean, repeated, and random-order runs. Use when tests depend on env vars, files, services, caches, order, or leftover state.
 ---
 
 # Hermetic test suites

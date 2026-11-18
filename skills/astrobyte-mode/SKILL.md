@@ -1,6 +1,6 @@
 ---
 name: astrobyte-mode
-description: Route substantial engineering, ML, GenAI, data, API, backend, frontend, prototype, debugging, evaluation, migration, or long-running work through a task-specific playbook with small changes and real-artifact verification. Use when a task crosses files or boundaries, has meaningful uncertainty, runs unattended, or needs a durable handoff.
+description: Route substantial engineering, ML, GenAI, and data work through small, verified steps. Use for cross-file work, uncertainty, unattended runs, or durable handoffs.
 ---
 
 # Astrobyte mode

@@ -127,8 +127,8 @@ class PackageTests(unittest.TestCase):
             "derived": (["--skills", "astrobyte-review"], {
                 "astrobyte-review": ["LICENSE", "licenses/pstack-MIT.txt", "licenses/mattpocock-skills-MIT.txt"],
             }),
-            "optional": (["--skills", "astrobyte-pr-workflows"], {
-                "astrobyte-pr-workflows": ["LICENSE", "skills/astrobyte-pr-workflows/LICENSE.tstack.txt"],
+            "optional": (["--skills", "astrobyte-workflows"], {
+                "astrobyte-workflows": ["LICENSE", "skills/astrobyte-workflows/LICENSE.tstack.txt"],
             }),
         }
         for name, (selection, packages) in cases.items():
@@ -200,8 +200,10 @@ class PackageTests(unittest.TestCase):
         gate = (review / "SKILL.md").read_text(encoding="utf-8")
         self.assertIn('opencode/autoinvoke: "false"', gate)
         dispatch = (review / "references/reviewer-dispatch.md").read_text(encoding="utf-8")
-        self.assertIn("no explicit reviewer requirement applies", gate)
-        self.assertIn("ask the operator to select an available independent reviewer", gate)
+        self.assertIn("An explicit reviewer requirement from the task, project, or machine configuration wins", gate)
+        self.assertIn("recommend the newest Sol, and ask the operator to confirm or choose another independent reviewer before the first review call", gate)
+        self.assertIn("Never substitute a model silently", gate)
+        self.assertTrue((review / "scripts/reviewer_state.py").is_file())
         self.assertIn("An explicit requirement stays binding", gate)
         self.assertIn("push or pull request waits", gate)
         self.assertIn("Ask for a first line of exactly `PASS` or `BLOCK`", gate)

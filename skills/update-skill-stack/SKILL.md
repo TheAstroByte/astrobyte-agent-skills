@@ -1,6 +1,6 @@
 ---
 name: update-skill-stack
-description: Review and apply upstream skill-stack updates without losing a personal profile or local skills. Use only when the user invokes $update-skill-stack or explicitly asks to update the adopted skill stack.
+description: Review and apply upstream skill-stack updates without losing a personal profile or local skills. Use only when the user invokes it or asks to update the stack.
 disable-model-invocation: true
 metadata:
   opencode/autoinvoke: "false"

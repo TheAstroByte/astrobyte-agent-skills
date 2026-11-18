@@ -1,14 +1,14 @@
 ---
-name: astrobyte-pr-workflows
-description: Explicit PR completion, Sol review loops, councils, and continuation commands.
+name: astrobyte-workflows
+description: Explicit PR completion, review loops, councils, and continuation commands. Use only when the operator asks for one by name.
 disable-model-invocation: true
 metadata:
   opencode/autoinvoke: "false"
 ---
 
-# Optional PR workflows
+# Astrobyte workflows
 
-Run the operation the operator requests. Installing this package, mentioning a command in discussion, or encountering a risky change does not invoke a finish command, council, or takeover. A selected personal `review_method: sol-loop` permits the existing review gate to read that method without starting another operation.
+Run the operation the operator requests. Installing this package, mentioning a command in discussion, or encountering a risky change does not invoke a finish command, council, or takeover. A selected personal `review_method: review-loop` permits the existing review gate to read that method without starting another operation. The older names `astrobyte-pr-workflows` and `sol-loop` mean the same package and operation.
 
 1. Read repository instructions and resolve the current delivery mode and acceptance evidence through `../astrobyte-mode/SKILL.md`.
 2. Run this package's `scripts/workflow_state.py policy --project <repository>` to read effective personal options. It uses the installed router's resolver; missing dependencies or malformed settings remain errors.
@@ -17,12 +17,12 @@ Run the operation the operator requests. Installing this package, mentioning a c
 | Operation | Procedure |
 | --- | --- |
 | `full-stop`, `full-send` | [Finish the task](references/finish.md). Both names currently leave work unmerged. |
-| `sol-loop` | [Run scoped independent review](references/sol-loop.md). |
+| `review-loop` | [Run scoped independent review](references/review-loop.md). |
 | `council` | [Select and run council](references/council.md). |
 | `takeover`, `modernize` | [Continue existing work](references/continuation.md). |
 | `babysit-pr`, `file-pr`, `leaving-pr-comments` | [Handle PR work](references/pr-feedback.md). |
 
-Use an operation inside another only when that requested workflow includes it. `full-stop` and `full-send` include scoped Sol review and relevant PR feedback, but never add council. Reuse a current independent verdict instead of reviewing the same change twice.
+Use an operation inside another only when that requested workflow includes it. `full-stop` and `full-send` include a review loop and relevant PR feedback, but never add council. Reuse a current independent verdict instead of reviewing the same change twice.
 
 For `explore` and `prototype`, prove the intended question or runnable path. Defer uncommon, unobserved error handling unless it blocks that goal or the operator requests it. Give reviewers the mode and acceptance evidence. A finish command preserves the quality mode.
 

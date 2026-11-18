@@ -318,6 +318,7 @@ def interactive_answers(
     optional_default = overrides.get("optional_skills", prior_config.get("optional_skills", defaults.get("optional_skills", [])))
     if not isinstance(optional_default, list) or not all(isinstance(name, str) for name in optional_default):
         raise ValueError("Existing optional_skills must be a list of names")
+    optional_default = current_names(optional_default, load_json(CATALOG_PATH))
     optional_skills = ask_optional_skills(optional_names, optional_default)
     identity_profile = dict(operator_profile or {})
     identity_profile["git_identity"] = {**identity_profile.get("git_identity", {}), **overrides.get("git_identity", {})}
@@ -387,9 +388,16 @@ def interactive_answers(
     }
 
 
+def current_names(names: list[str], catalog: dict[str, Any]) -> list[str]:
+    """Map renamed skills to their current names; installation only, not invocation."""
+    renamed = catalog.get("renamed_skills", {})
+    return [renamed.get(name, name) for name in names]
+
+
 def validate_optional_skills(names: Any, catalog: dict[str, Any]) -> list[str]:
     if not isinstance(names, list) or not all(isinstance(item, str) for item in names):
         raise ValueError("optional_skills must be a list of skill names")
+    names = current_names(names, catalog)
     if len(names) != len(set(names)):
         raise ValueError("optional_skills must not contain duplicates")
     allowed = {name for name, info in catalog["skills"].items() if info.get("tier") == "optional"}
@@ -674,6 +682,7 @@ def build_plan(answers: dict[str, Any], home: Path, catalog: dict[str, Any], *, 
     requested = answers.get("selected_skills", catalog["profiles"][answers["profile"]])
     if not isinstance(requested, list) or not requested or any(not isinstance(name, str) for name in requested):
         raise ValueError("selected_skills must be a nonempty list of catalog names")
+    requested = current_names(requested, catalog)
     selected = resolve_selection(catalog, [*requested, *answers.get("optional_skills", [])])
     prior_targets = read_manifest(home).get("targets", {})
     plan: list[dict[str, Any]] = []
@@ -717,15 +726,19 @@ def build_plan(answers: dict[str, Any], home: Path, catalog: dict[str, Any], *, 
 
     planned_targets = {Path(item["target"]) for item in plan}
     current_destinations = set(destination_groups(answers["harnesses"], home))
+    renamed_skills = catalog.get("renamed_skills", {})
     for raw_target, metadata in prior_targets.items():
-        removed_optional = metadata.get("skill") in answers.get("_removed_optional_skills", []) and catalog.get("skills", {}).get(metadata.get("skill"), {}).get("tier") == "optional"
-        if not prune and not removed_optional:
-            continue
+        skill = metadata.get("skill")
         target = Path(raw_target)
+        # Archive an old-name directory only when this plan installs its replacement beside it,
+        # so subset and bootstrap runs never remove a workflow without installing the new one.
+        renamed = skill in renamed_skills and target.parent / renamed_skills[skill] in planned_targets
+        removed_optional = skill in answers.get("_removed_optional_skills", []) and catalog.get("skills", {}).get(skill, {}).get("tier") == "optional"
+        if not prune and not removed_optional and not renamed:
+            continue
         if target in planned_targets or target.parent not in current_destinations or not target.exists():
             continue
-        skill = metadata.get("skill")
-        if skill not in catalog.get("skills", {}):
+        if skill not in catalog.get("skills", {}) and not renamed:
             continue
         plan.append(
             {
@@ -733,7 +746,7 @@ def build_plan(answers: dict[str, Any], home: Path, catalog: dict[str, Any], *, 
                 "source": None,
                 "target": str(target),
                 "hash": None,
-                "status": "archive-optional" if removed_optional else "archive-profile",
+                "status": "archive-renamed" if renamed else "archive-optional" if removed_optional else "archive-profile",
                 "harnesses": [],
             }
         )
@@ -806,8 +819,9 @@ def print_plan(answers: dict[str, Any], plan: list[dict[str, Any]], home: Path) 
     for destination, harnesses in destination_groups(answers["harnesses"], home).items():
         print(f"  Destination: {destination} ({', '.join(harnesses)})")
     statuses = ("new", "update", "conflict", "same", "archive-profile", "archive-duplicate", "archive-superseded")
-    if any(item["status"] == "archive-optional" for item in plan):
-        statuses += ("archive-optional",)
+    for optional_status in ("archive-optional", "archive-renamed"):
+        if any(item["status"] == optional_status for item in plan):
+            statuses += (optional_status,)
     counts = {status: sum(item["status"] == status for item in plan) for status in statuses}
     print("  Changes: " + ", ".join(f"{key}={value}" for key, value in counts.items()))
     archived = [item["target"] for item in plan if item["status"] == "conflict" or item["status"].startswith("archive-")]
@@ -1358,7 +1372,7 @@ def run(argv: list[str] | None = None) -> int:
     if args.preferences and preferences is None:
         raise ValueError("Explicit preferences file is unavailable")
     if preferences and "optional_skills" in preferences["overrides"]:
-        validate_optional_skills(preferences["overrides"]["optional_skills"], catalog)
+        preferences["overrides"]["optional_skills"] = validate_optional_skills(preferences["overrides"]["optional_skills"], catalog)
     if args.portable_preferences and preferences is None:
         raise ValueError("Approve a preferences file before enabling portable preference export")
     machine_answers = None

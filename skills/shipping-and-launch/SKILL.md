@@ -1,6 +1,6 @@
 ---
 name: shipping-and-launch
-description: Prepares production launches. Use when preparing to deploy to production. Use when you need a pre-launch checklist, when setting up monitoring, when planning a staged rollout, or when you need a rollback strategy.
+description: Prepare a production launch. Use for pre-launch checklists, monitoring setup, staged rollouts, or rollback plans before deploying to production.
 ---
 
 # Shipping and Launch
@@ -265,10 +265,10 @@ Every deployment needs a rollback plan before it happens:
 ```
 ## See Also
 
-- For the project-wide Definition of Done that every change must clear before this checklist, see `../../references/definition-of-done.md`
-- For security pre-launch checks, see `../../references/security-checklist.md`
-- For performance pre-launch checklist, see `../../references/performance-checklist.md`
-- For accessibility verification before launch, see `../../references/accessibility-checklist.md`
+- For the project-wide Definition of Done that every change must clear before this checklist, see `references/definition-of-done.md`
+- For security pre-launch checks, see `references/security-checklist.md`
+- For performance pre-launch checklist, see `references/performance-checklist.md`
+- For accessibility verification before launch, see `references/accessibility-checklist.md`
 
 ## Common Rationalizations
 

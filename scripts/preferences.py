@@ -20,16 +20,26 @@ DEFAULT_CHOICES = {
 BOOL_DEFAULTS = {"ci_validation", "unattended_runs"}
 
 
+# Earlier releases called the review loop "sol-loop"; saved preferences keep working.
+LEGACY_REVIEW_METHODS = {"sol-loop": "review-loop"}
+
+
 def validate_pr_workflows(value: Any) -> None:
-    """Validate reusable workflow choices, never model routes or authority."""
+    """Validate reusable workflow choices, never model routes or authority.
+
+    Normalizes legacy method names in place so every loader resolves one behaviour.
+    """
     if not isinstance(value, dict) or set(value) - {"review_method", "council_round_limit", "t3"}:
         raise ValueError("Invalid pr_workflows preferences")
-    if "review_method" in value and value["review_method"] not in ("baseline", "sol-loop"):
+    method = value.get("review_method")
+    if "review_method" in value and (not isinstance(method, str) or LEGACY_REVIEW_METHODS.get(method, method) not in ("baseline", "review-loop")):
         raise ValueError("Invalid pr_workflows review_method")
     if "council_round_limit" in value and (type(value["council_round_limit"]) is not int or not 1 <= value["council_round_limit"] <= 20):
         raise ValueError("pr_workflows council_round_limit must be an integer from 1 to 20")
     if "t3" in value and type(value["t3"]) is not bool:
         raise ValueError("pr_workflows t3 must be a boolean")
+    if method in LEGACY_REVIEW_METHODS:
+        value["review_method"] = LEGACY_REVIEW_METHODS[method]
 
 
 def inherited_values(config: dict[str, Any]) -> dict[str, Any]:
