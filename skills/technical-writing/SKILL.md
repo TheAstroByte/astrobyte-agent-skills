@@ -1,6 +1,6 @@
 ---
 name: technical-writing
-description: "Layered technical-writing standard: Diátaxis structure, Google developer style sentences, STE instruction rules, Global English syntax. Use for /technical-writing or when writing or reviewing docs, RFCs, readmes, PR descriptions, or commit messages."
+description: "Technical-writing standard: Di\u00e1taxis structure, Google developer style, STE rules, Global English. Use when writing or reviewing docs, RFCs, READMEs, PRs, or commits."
 disable-model-invocation: true
 ---
 

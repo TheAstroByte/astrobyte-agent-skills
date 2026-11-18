@@ -1,6 +1,6 @@
 ---
 name: research
-description: Investigate a question against high-trust primary sources and capture the findings as a Markdown file in the repo. Use when the user wants a topic researched, docs or API facts gathered, or reading legwork delegated to a background agent.
+description: Investigate a question against primary sources and save the findings as Markdown in the repo. Use when asked to research a topic or gather docs or API facts.
 ---
 
 Use a background agent when delegation is available, permitted, and useful for independent reading. Otherwise do the research in the current agent. Missing delegation does not require installing or configuring another harness.

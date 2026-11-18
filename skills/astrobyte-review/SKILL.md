@@ -1,6 +1,6 @@
 ---
 name: astrobyte-review
-description: Review a change against intent, repository standards, correctness, security, data integrity, maintainability, and real verification evidence. Use for PRs, branches, diffs, risky artifacts, or explicit adversarial review.
+description: Independent review of a change before a push or PR, with a PASS or BLOCK verdict. Use for PRs, branches, diffs, risky artifacts, or adversarial review.
 metadata:
   opencode/autoinvoke: "false"
 ---

@@ -306,7 +306,7 @@
     "ci-cd-and-automation": {"source": "addyosmani", "tier": "full"},
     "deprecation-and-migration": {"source": "addyosmani", "tier": "full"},
     "frontend-ui-engineering": {"source": "addyosmani", "tier": "builder"},
-    "frontend-design": {"source": "anthropics", "tier": "builder", "runtime_resources": ["LICENSE.txt"]},
+    "frontend-design": {"source": "anthropics", "tier": "builder", "runtime_resources": ["LICENSE.txt"], "verbatim": true},
     "git-workflow-and-versioning": {
       "source": "addyosmani",
       "tier": "optional",

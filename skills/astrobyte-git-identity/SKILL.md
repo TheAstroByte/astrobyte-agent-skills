@@ -1,6 +1,6 @@
 ---
 name: astrobyte-git-identity
-description: Attribute Git commits made by an agent to both the operator and the active agent product without changing the operator's normal Git identity. Use before an agent creates, amends, or pushes commits.
+description: Attribute agent-made commits to both the human and the agent, without changing Git config. Use before an agent commits, amends, or pushes.
 ---
 
 # Astrobyte Git identity

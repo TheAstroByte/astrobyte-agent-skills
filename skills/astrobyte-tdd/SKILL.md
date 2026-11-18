@@ -1,6 +1,6 @@
 ---
 name: astrobyte-tdd
-description: Use a pragmatic red-green-refactor loop for behavior changes and bug fixes when a trustworthy test seam is clear and affordable. Use when the user asks for TDD, a regression test, red-green-refactor, or implementation through tests.
+description: Pragmatic red-green-refactor for behavior changes and bug fixes when a test seam is clear and cheap. Use when asked for TDD, a regression test, or test-first work.
 ---
 
 # Astrobyte TDD

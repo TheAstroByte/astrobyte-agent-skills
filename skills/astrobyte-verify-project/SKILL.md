@@ -1,6 +1,6 @@
 ---
 name: astrobyte-verify-project
-description: Create or maintain a project-local skill that proves CLI, API, UI, service, model, pipeline, or deployment behavior through the real runtime surface. Use when a repository lacks a repeatable verification path or its verification map has drifted.
+description: Create or maintain a project-local skill proving real CLI, API, UI, service, model, pipeline, or deployment behavior. Use when verification is missing or its map has drifted.
 metadata:
   opencode/autoinvoke: "false"
 ---

@@ -28,6 +28,20 @@ class ValidateTests(unittest.TestCase):
         shutil.copytree(REPO_ROOT, root, ignore=shutil.ignore_patterns(".git", ".hermes", "__pycache__"))
         return root
 
+    def test_description_over_200_characters_is_rejected_unless_verbatim(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = self.copy_repository(directory)
+            skill = root / "skills/unslop/SKILL.md"
+            text = skill.read_text(encoding="utf-8")
+            skill.write_text(text.replace("description: Cut AI tells from any writing. Must always apply.",
+                                          "description: " + "x" * 201), encoding="utf-8")
+            self.assertIn("skills/unslop/SKILL.md: description exceeds 200 characters", validate_repository(root))
+            catalog_path = root / "catalog.json"
+            catalog = json.loads(catalog_path.read_text(encoding="utf-8"))
+            catalog["skills"]["unslop"]["verbatim"] = True
+            catalog_path.write_text(json.dumps(catalog), encoding="utf-8")
+            self.assertNotIn("skills/unslop/SKILL.md: description exceeds 200 characters", validate_repository(root))
+
     def test_retired_skill_names_are_rejected_in_packaged_instructions(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = self.copy_repository(directory)

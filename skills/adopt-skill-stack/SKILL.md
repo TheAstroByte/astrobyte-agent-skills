@@ -1,6 +1,6 @@
 ---
 name: adopt-skill-stack
-description: Install the shared Astrobyte profile by default, or run an explicitly requested onboarding interview to personalize it. Use only when the user invokes $adopt-skill-stack or requests installation or adoption of this stack.
+description: Install the shared Astrobyte profile, or run a requested onboarding interview to personalize it. Use only when the user invokes it or asks to adopt this stack.
 disable-model-invocation: true
 metadata:
   opencode/autoinvoke: "false"

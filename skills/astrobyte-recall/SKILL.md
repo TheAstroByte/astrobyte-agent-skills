@@ -1,6 +1,6 @@
 ---
 name: astrobyte-recall
-description: Reconstruct current work state from repository evidence, handoffs, decision trails, recent history, artifacts, and available session records. Use when resuming work, switching harnesses, changing machines, or asking where a project was left.
+description: Rebuild where work was left from repo evidence, handoffs, decision trails, and history. Use when resuming work, switching harnesses, or changing machines.
 metadata:
   opencode/autoinvoke: "false"
 ---

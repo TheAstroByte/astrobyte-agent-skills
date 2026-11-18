@@ -29,6 +29,9 @@ NAME_PATTERN = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 LINK_PATTERN = re.compile(r"\[[^\]]*\]\(([^)]+)\)")
 
 
+MAX_DESCRIPTION = 200
+
+
 def frontmatter(path: Path) -> dict[str, str]:
     text = path.read_text(encoding="utf-8")
     if not text.startswith("---\n") or "\n---\n" not in text[4:]:
@@ -130,6 +133,10 @@ def validate_repository(root: Path = REPO_ROOT) -> list[str]:
             errors.append(f"{path.relative_to(root)}: skill name exceeds 64 characters")
         if not 1 <= len(description) <= 1024:
             errors.append(f"{path.relative_to(root)}: description must be 1 to 1024 characters")
+        # Short descriptions keep always-on context small and fit marketplace cards.
+        # Verbatim vendored skills keep upstream text; packaging shortens them in the copy.
+        if len(description) > MAX_DESCRIPTION and not catalog.get("skills", {}).get(name, {}).get("verbatim"):
+            errors.append(f"{path.relative_to(root)}: description exceeds {MAX_DESCRIPTION} characters")
         if "<" in description or ">" in description:
             errors.append(f"{path.relative_to(root)}: description contains an angle bracket")
         text = path.read_text(encoding="utf-8")
