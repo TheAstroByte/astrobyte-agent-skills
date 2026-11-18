@@ -1,0 +1,4 @@
+interface:
+  display_name: "Astrobyte Git Identity"
+  short_description: "Attribute agent commits to the operator and agent"
+  default_prompt: "Use $astrobyte-git-identity before creating or pushing this agent-authored Git commit."

@@ -7,6 +7,6 @@ Apply this sequence to new interfaces and deliberate visual redesigns. Keep the 
 3. For implementation, use `frontend-ui-engineering` within the project's existing stack. Preserve reusable components, accessibility, responsive behavior, and loading, error, and empty states. For a design-only request, deliver the design artifact without starting implementation.
 4. For implemented interfaces, inspect the rendered result with available browser tools. Use `browser-testing-with-devtools` when a Chrome DevTools MCP connection is available. Otherwise use the harness's available browser capability. Check the match to the brief, responsive layouts, and keyboard interaction. Fix observed issues and record unavailable checks.
 
-Resolve sibling skills through the router's package-relative lookup. If an applicable specialist is missing, follow the router's missing-specialist policy. Runtime work does not start installation or onboarding.
+Find each specialist with the router's lookup in [dependencies.md](dependencies.md): a sibling path, then the session's skill list, for example `astrobyte-web:frontend-design`. If an applicable specialist is missing, report it with the package that provides it. Runtime work does not start installation or onboarding.
 
 Complete when the requested design or implemented interface matches the brief and existing product constraints, with observed verification evidence and any pending checks stated.

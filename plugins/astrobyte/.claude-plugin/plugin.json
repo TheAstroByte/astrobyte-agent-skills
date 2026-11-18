@@ -1,0 +1,5 @@
+{
+  "name": "astrobyte",
+  "version": "0.6.0",
+  "description": "Astrobyte core: routed planning, independent review, commit attribution, council and review loop."
+}

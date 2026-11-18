@@ -14,6 +14,7 @@ try:
     from scripts.preferences import validate_preferences
     from scripts.packages import validate_dependencies, validate_package
     from scripts.package_licenses import validate_licenses
+    from scripts.plugin_packages import check as check_plugin_packages
     from scripts.routing import TEMPLATE_RELATIVE, validate_template_text
 except ModuleNotFoundError:  # Direct execution from scripts/validate.py.
     from routing import TEMPLATE_RELATIVE, validate_template_text  # type: ignore[no-redef]
@@ -22,6 +23,7 @@ except ModuleNotFoundError:  # Direct execution from scripts/validate.py.
     from preferences import validate_preferences
     from packages import validate_dependencies, validate_package
     from package_licenses import validate_licenses
+    from plugin_packages import check as check_plugin_packages  # type: ignore[no-redef]
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -210,6 +212,11 @@ def validate_repository(root: Path = REPO_ROOT) -> list[str]:
 
     errors.extend(validate_resources(root))
     errors.extend(validate_licenses(root))
+    if catalog.get("packages"):
+        try:
+            errors.extend(check_plugin_packages(root))
+        except (OSError, ValueError, json.JSONDecodeError) as exc:
+            errors.append(f"plugins: {exc}")
     try:
         validate_preferences(load_object(root / "templates/preferences.json"))
     except (OSError, ValueError) as exc:

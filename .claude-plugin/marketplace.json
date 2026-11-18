@@ -1,0 +1,33 @@
+{
+  "name": "astrobyte-skills",
+  "owner": {
+    "name": "TheAstroByte"
+  },
+  "plugins": [
+    {
+      "name": "astrobyte",
+      "source": "./plugins/astrobyte",
+      "description": "Astrobyte core: routed planning, independent review, commit attribution, council and review loop."
+    },
+    {
+      "name": "astrobyte-web",
+      "source": "./plugins/astrobyte-web",
+      "description": "Web, API, and TypeScript specialists for Astrobyte."
+    },
+    {
+      "name": "astrobyte-writing",
+      "source": "./plugins/astrobyte-writing",
+      "description": "Writing and research specialists for Astrobyte."
+    },
+    {
+      "name": "astrobyte-reliability",
+      "source": "./plugins/astrobyte-reliability",
+      "description": "Testing, debugging, security, and operations specialists for Astrobyte."
+    },
+    {
+      "name": "astrobyte-continuity",
+      "source": "./plugins/astrobyte-continuity",
+      "description": "Resume, handoff, design-continuity, and PR-feedback specialists for Astrobyte."
+    }
+  ]
+}

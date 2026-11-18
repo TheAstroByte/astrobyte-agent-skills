@@ -1,0 +1,8 @@
+{
+  "name": "astrobyte-web",
+  "version": "0.6.0",
+  "description": "Web, API, and TypeScript specialists for Astrobyte.",
+  "dependencies": [
+    "astrobyte"
+  ]
+}

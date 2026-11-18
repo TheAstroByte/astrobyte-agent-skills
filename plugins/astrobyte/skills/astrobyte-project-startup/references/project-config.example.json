@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "project": {
+    "archetype": "llm-api",
+    "maturity": "prototype",
+    "deployment_target": "local-docker",
+    "data_sensitivity": "internal"
+  },
+  "stack": {
+    "python": {
+      "package_manager": "uv",
+      "quality": ["ruff", "pytest", "pyright-standard"]
+    },
+    "api": "fastapi",
+    "llm": {
+      "endpoint": "openai-compatible-local",
+      "adapter": "hand-coded-typed",
+      "schemas": "pydantic"
+    },
+    "containers": "docker-compose"
+  },
+  "decisions": [
+    {
+      "area": "llm-endpoint",
+      "choice": "openai-compatible-local",
+      "reason": "Keep private inputs on the development machine",
+      "source": "user"
+    }
+  ],
+  "unresolved": []
+}

@@ -1,0 +1,8 @@
+{
+  "name": "astrobyte-writing",
+  "version": "0.6.0",
+  "description": "Writing and research specialists for Astrobyte.",
+  "dependencies": [
+    "astrobyte"
+  ]
+}

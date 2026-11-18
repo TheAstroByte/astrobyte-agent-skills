@@ -20,7 +20,7 @@ description: Route substantial engineering, ML, GenAI, and data work through sma
 7. Read `references/principles.md`. Apply only the principles named by the selected playbook.
 8. Use the primary harness's native tools. Read `references/harnesses.md` only when delegation, browser control, skill invocation, or transcript recovery depends on the harness.
 
-Workflow skills are installed beside this one. To use a named sibling skill, read `../<skill-name>/SKILL.md` resolved from this file's directory; this path works when a harness only allows explicit invocation, as Codex and OpenCode do for `astrobyte-review`. A missing hard dependency means the workflow installation is incomplete; report the missing skill and installation command rather than substituting a weaker gate. For a conditional specialist, report it only when that branch applies and request installation of that capability. For unavailable or legacy references, read [dependencies.md](references/dependencies.md). Runtime tasks do not invoke setup, adoption, or updates automatically.
+Workflow skills are installed beside this one. To use a named sibling skill, read `../<skill-name>/SKILL.md` resolved from this file's directory; this path works when a harness only allows explicit invocation, as Codex and OpenCode do for `astrobyte-review`. A specialist from another plugin package is used through its name in the session's skill list. Follow [dependencies.md](references/dependencies.md) to find a skill and to report one that is missing; a missing hard dependency is never replaced with a weaker gate. Runtime tasks do not invoke setup, adoption, or updates automatically.
 
 The route is complete when one playbook and its evidence standard are explicit.
 

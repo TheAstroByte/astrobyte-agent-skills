@@ -1,0 +1,100 @@
+{
+  "schema_version": 1,
+  "selection": {
+    "preserve_existing_stack": true,
+    "ask_on_material_conflict": true,
+    "greenfield_defaults_are_preferences": true
+  },
+  "python": {
+    "package_manager": "uv",
+    "package_manager_fallback": "poetry",
+    "format_and_lint": "ruff",
+    "test_framework": "pytest",
+    "type_checker": "pyright",
+    "type_check_mode": "standard"
+  },
+  "javascript": {
+    "runtime": "node-active-lts",
+    "package_manager": "pnpm",
+    "language": "typescript-strict",
+    "quality_tool": "biome",
+    "unit_test_framework": "vitest",
+    "browser_test_framework": "playwright-when-needed"
+  },
+  "api": {
+    "framework": "fastapi",
+    "schemas": "pydantic-v2",
+    "http_client": "httpx",
+    "contract": "openapi",
+    "async_policy": "only-for-real-concurrent-io"
+  },
+  "frontend": {
+    "language": "typescript",
+    "library": "react",
+    "fastapi_backed_default": "vite",
+    "server_rendered_default": "nextjs-when-justified",
+    "styling": "tailwind",
+    "components": "shadcn-ui",
+    "tiny_interface_styling": "plain-css"
+  },
+  "data": {
+    "new_transformation_pipeline": "polars",
+    "compatibility_dataframe": "pandas",
+    "large_analytical_format": "parquet",
+    "supported_exchange_formats": ["csv", "json", "jsonl", "parquet", "project-required"],
+    "local_analytical_sql": "duckdb"
+  },
+  "storage": {
+    "production_system_of_record": "postgresql",
+    "local_prototype": "sqlite",
+    "orm": "sqlalchemy-2",
+    "migrations": "alembic",
+    "dedicated_vector_store": "qdrant",
+    "colocated_vector_store": "pgvector",
+    "vector_store_policy": "ask-from-retrieval-and-operations-needs"
+  },
+  "llm": {
+    "schemas": "pydantic",
+    "agent_framework": "pydantic-ai-when-agentic",
+    "adapter_style": "hand-coded-typed",
+    "native_structured_outputs": true,
+    "openai_compatible_local_endpoints": true,
+    "local_runtimes": ["ollama", "lm-studio", "vllm", "llama-cpp", "transformers", "unsloth"],
+    "routing_proxy": "litellm-only-when-routing-justifies-it",
+    "excluded_frameworks": ["langchain", "llamaindex"]
+  },
+  "notebooks": {
+    "durable_new_notebook": "marimo-soft-preference",
+    "compatibility_notebook": "jupyter",
+    "reusable_logic_location": "python-modules"
+  },
+  "experiments": {
+    "default_tracker": "mlflow",
+    "small_run_artifacts": ["json", "jsonl", "parquet", "files"],
+    "formal_model_and_agent_evals": "inspect-ai",
+    "application_eval": "small-typed-harness-first",
+    "exception_only_trackers": ["wandb", "trackio"]
+  },
+  "llm_observability": {
+    "baseline": "structured-logs",
+    "preferred_when_needed": "opik",
+    "deployment": "self-hosted-preferred",
+    "instrumentation": "opentelemetry-when-practical",
+    "avoid_if_mlflow_is_sufficient": true
+  },
+  "deployment": {
+    "local_default": "docker-compose",
+    "ci_default": "github-actions",
+    "target": "ask",
+    "kubernetes": "opt-in"
+  },
+  "security": {
+    "authentication": "ask-from-exposure-and-existing-identity-provider",
+    "secrets": "env-local-and-platform-managed-production",
+    "data_sensitivity": "ask-before-external-transfer"
+  },
+  "observability": {
+    "baseline": ["structured-logs", "health-checks", "request-ids", "actionable-errors"],
+    "backend": "opt-in"
+  }
+}

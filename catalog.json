@@ -143,6 +143,89 @@
       "shipping-and-launch"
     ]
   },
+  "packages": {
+    "astrobyte": {
+      "description": "Astrobyte core: routed planning, independent review, commit attribution, council and review loop.",
+      "skills": [
+        "astrobyte-mode",
+        "unslop",
+        "astrobyte-review",
+        "astrobyte-git-identity",
+        "astrobyte-workflows",
+        "astrobyte-architect",
+        "codebase-design",
+        "astrobyte-project-startup",
+        "astrobyte-show-work",
+        "prototype"
+      ],
+      "visible": [
+        "astrobyte-mode",
+        "unslop"
+      ]
+    },
+    "astrobyte-web": {
+      "description": "Web, API, and TypeScript specialists for Astrobyte.",
+      "skills": [
+        "frontend-ui-engineering",
+        "frontend-design",
+        "browser-testing-with-devtools",
+        "typescript-best-practices",
+        "api-and-interface-design"
+      ],
+      "depends_on": [
+        "astrobyte"
+      ]
+    },
+    "astrobyte-writing": {
+      "description": "Writing and research specialists for Astrobyte.",
+      "skills": [
+        "technical-writing",
+        "research",
+        "writing-for-agents"
+      ],
+      "depends_on": [
+        "astrobyte"
+      ]
+    },
+    "astrobyte-reliability": {
+      "description": "Testing, debugging, security, and operations specialists for Astrobyte.",
+      "skills": [
+        "astrobyte-tdd",
+        "diagnosing-bugs",
+        "hermetic-test-suites",
+        "security-and-hardening",
+        "observability-and-instrumentation",
+        "performance-optimization",
+        "ci-cd-and-automation",
+        "deprecation-and-migration",
+        "shipping-and-launch",
+        "source-driven-development"
+      ],
+      "depends_on": [
+        "astrobyte"
+      ]
+    },
+    "astrobyte-continuity": {
+      "description": "Resume, handoff, design-continuity, and PR-feedback specialists for Astrobyte.",
+      "skills": [
+        "astrobyte-recall",
+        "handoff",
+        "pr-feedback-loop",
+        "astrobyte-verify-project",
+        "blast-radius",
+        "grilling",
+        "domain-modeling",
+        "continual-improvement-check",
+        "to-questionnaire"
+      ],
+      "depends_on": [
+        "astrobyte"
+      ]
+    }
+  },
+  "package_dependency_overrides": {
+    "astrobyte": {"astrobyte-workflows": ["pr-feedback-loop", "astrobyte-recall"]}
+  },
   "renamed_skills": {"astrobyte-pr-workflows": "astrobyte-workflows"},
   "superseded_skills": [
     "code-review-and-quality",

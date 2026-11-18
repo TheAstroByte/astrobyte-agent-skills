@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "description": "Text replacements applied only to generated plugin copies. Each `find` must occur exactly once in its file.",
+  "skills": {
+    "astrobyte-workflows": {
+      "SKILL.md": [
+        {
+          "find": "description: Explicit PR completion, review loops, councils, and continuation commands. Use only when the operator asks for one by name.",
+          "replace": "description: Council and review-loop operations. Use only when the operator asks for one by name."
+        },
+        {
+          "find": "| `full-stop`, `full-send` | [Finish the task](references/finish.md). Both names currently leave work unmerged. |\n",
+          "replace": ""
+        },
+        {
+          "find": "| `takeover`, `modernize` | [Continue existing work](references/continuation.md). |\n",
+          "replace": ""
+        },
+        {
+          "find": "| `babysit-pr`, `file-pr`, `leaving-pr-comments` | [Handle PR work](references/pr-feedback.md). |\n",
+          "replace": ""
+        },
+        {
+          "find": "Use an operation inside another only when that requested workflow includes it. `full-stop` and `full-send` include a review loop and relevant PR feedback, but never add council. Reuse a current independent verdict instead of reviewing the same change twice.",
+          "replace": "This package contains council and review-loop only. Finish, takeover, and PR-feedback operations are in the full skill collection. Reuse a current independent verdict instead of reviewing the same change twice."
+        },
+        {
+          "find": "does not invoke a finish command, council, or takeover.",
+          "replace": "does not invoke council or a review loop."
+        },
+        {
+          "find": " The older names `astrobyte-pr-workflows` and `sol-loop` mean the same package and operation.",
+          "replace": " The older name `sol-loop` means the same operation."
+        },
+        {
+          "find": " A finish command preserves the quality mode.",
+          "replace": ""
+        }
+      ],
+      "agents/openai.yaml": [
+        {
+          "find": "to finish this task with the PR left unmerged.",
+          "replace": "to run a council or review loop for this change."
+        }
+      ]
+    },
+    "browser-testing-with-devtools": {
+      "SKILL.md": [
+        {
+          "find": "For an explicitly requested setup, use the host's MCP configuration. The following is a Claude Code example for `.mcp.json`; other hosts have their own configuration. Preview the configuration change and apply it within the approved scope.\n\n```json\n{\n  \"mcpServers\": {\n    \"chrome-devtools\": {\n      \"command\": \"npx\",\n      \"args\": [\"-y\", \"chrome-devtools-mcp@latest\", \"--isolated\"]\n    }\n  }\n}\n```\n\n`-y` skips the npx install confirmation. By default the server launches Chrome with its own dedicated profile (under `~/.cache/chrome-devtools-mcp/`), separate from your personal browser; `--isolated` goes one step further and uses a temporary profile that is wiped when the browser closes. This is the right setup for most testing.\n",
+          "replace": "This package does not install or configure a browser server. When the operator explicitly asks for setup, point them to the official guide below and their organization's approved install path; do not fetch and run a package yourself. Prefer an isolated browser profile for most testing.\n"
+        }
+      ]
+    },
+    "frontend-design": {
+      "SKILL.md": [
+        {
+          "find": "description: Guidance for distinctive, intentional visual design when building new UI or reshaping an existing one. Helps with aesthetic direction, typography, and making choices that don't read as templated defaults.",
+          "replace": "description: \"Distinctive, intentional visual design for new or reshaped UI. Use for aesthetic direction, typography, and choices that don't read as templated defaults.\""
+        }
+      ]
+    }
+  },
+  "remove": {
+    "astrobyte-workflows": [
+      "references/finish.md",
+      "references/continuation.md",
+      "references/pr-feedback.md"
+    ]
+  },
+  "notices": {
+    "frontend-design": "Modified by Astrobyte: this packaged copy shortens the frontmatter description. The instructions below are Anthropic's unchanged text; see LICENSE.txt."
+  }
+}

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Astrobyte TDD"
+  short_description: "Use a pragmatic red-green-refactor loop"
+  default_prompt: "Use $astrobyte-tdd to implement this behavior through a trustworthy failing test."

@@ -28,4 +28,4 @@ Produce:
 
 Architecture is complete when implementation can proceed without inventing a second source of truth or an unresolved ownership boundary.
 
-For detailed module vocabulary, use `codebase-design`. For public HTTP or GraphQL contracts, also use `api-and-interface-design`. If that conditional specialist is unavailable, report the missing capability and request its installation before applying that branch. Other architecture tasks do not need it.
+For detailed module vocabulary, use `codebase-design`. For public HTTP or GraphQL contracts, also use `api-and-interface-design`: read `../api-and-interface-design/SKILL.md` when it is a sibling, otherwise use it from the session's skill list, for example `astrobyte-web:api-and-interface-design`. If it is unavailable, report the missing capability and the package that provides it before applying that branch. Other architecture tasks do not need it.

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Astrobyte Mode"
+  short_description: "Route and verify substantial technical work"
+  default_prompt: "Use $astrobyte-mode to execute this task with the right playbook and verification."

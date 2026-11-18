@@ -7,6 +7,7 @@ import unittest
 from pathlib import Path
 
 from scripts.portable_profile import REPO_ROOT, generate, resource_contents, validate_resources
+from scripts.plugin_packages import write as write_plugin_packages
 from scripts.validate import validate_repository
 
 
@@ -37,6 +38,9 @@ class PortableProfileTests(unittest.TestCase):
         agreement.write_text(agreement.read_text().replace("Use one reviewer.", "Use one independent reviewer."))
         self.assertTrue(any("stale generated resource" in error for error in validate_repository(self.root)))
         generate(self.root)
+        # Plugin packages copy the generated resources, so they regenerate after the profile.
+        self.assertTrue(any("run python3 scripts/plugin_packages.py" in error for error in validate_repository(self.root)))
+        self.assertEqual(write_plugin_packages(self.root), [])
         self.assertEqual(validate_repository(self.root), [])
 
     def test_machine_and_publication_fields_are_not_exported(self) -> None:
