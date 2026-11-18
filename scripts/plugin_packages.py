@@ -183,7 +183,11 @@ def tree(root: Path, skip: set[Path]) -> dict[str, tuple[str, bytes | str]]:
 def compare(expected: Path, actual: Path) -> list[str]:
     differences: list[str] = []
     for relative in ("plugins", ".claude-plugin"):
-        if not (actual / relative).exists():
+        root = actual / relative
+        if root.is_symlink():
+            differences.append(f"{relative}: is a symlink, expected a directory")
+            continue
+        if not root.is_dir():
             differences.append(f"{relative}: missing")
             continue
         want = tree(expected / relative, set())

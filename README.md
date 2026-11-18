@@ -33,7 +33,13 @@ Start a fresh agent session and ask it to use `astrobyte-mode` for a bounded tas
 
 This repository is also a Claude Code plugin marketplace. `plugins/` holds generated packages built from `skills/` by `scripts/plugin_packages.py`; edit `skills/`, `catalog.json` `packages`, or `plugins/overlays.json`, then regenerate.
 
-Install core with the native installer above (`--harnesses claude`, or `sbx skills import` in Docker Sandboxes). Then add any optional packages as plugins:
+Install core natively and nothing else:
+
+```bash
+python3 scripts/install.py --harnesses claude --skills astrobyte-mode,astrobyte-workflows
+```
+
+Do not use the default install here: it installs the full bundle, which already contains the optional packages' skills. In Docker Sandboxes, import only those skills into the sandbox store. Then add any optional packages as plugins:
 
 ```bash
 claude plugin marketplace add TheAstroByte/astrobyte-agent-skills
@@ -48,7 +54,11 @@ claude plugin install astrobyte-web@astrobyte-skills
 | `astrobyte-reliability` | TDD, debugging, hermetic tests, security, observability, performance, CI/CD, migrations, launch, and source-driven development. |
 | `astrobyte-continuity` | Recall, handoff, PR feedback, project verification, blast radius, grilling, domain modeling, and related checks. |
 
-Optional packages need core but do not install the core plugin themselves, so they work beside a native core. Use one source of core, either native or the `astrobyte` plugin, never both, or its skills appear twice. In Docker Sandboxes, prefer native core: a local test install of the core plugin received a masked skill directory and could not read its own references, although a Git-sourced install worked.
+Optional packages need core but do not install the core plugin themselves, so they work beside a native core. Each skill should come from one place, or it appears twice:
+
+- Use one source of core, either native or the `astrobyte` plugin.
+- Native core also installs `astrobyte-recall` and `pr-feedback-loop`, which the full workflow skill needs. `astrobyte-continuity` contains them too, so with native core those two appear twice if you add that package.
+- If you already have a full native install, remove the native copies of any specialists before adding their plugin package. Updates keep previously installed skills. In Docker Sandboxes, prefer native core: a local test install of the core plugin received a masked skill directory and could not read its own references, although a Git-sourced install worked.
 
 Packages install only when you choose them. To update, run `claude plugin marketplace update astrobyte-skills`, then `claude plugin update <package>@astrobyte-skills`, and restart the session.
 

@@ -157,5 +157,30 @@ class PluginPackageTests(unittest.TestCase):
         self.assertEqual(marketplace["name"], MARKETPLACE)
         self.assertNotIn(MARKETPLACE, self.catalog["packages"])
 
+    def test_symlinked_output_roots_are_detected(self) -> None:
+        for relative in ("plugins", ".claude-plugin"):
+            with self.subTest(root=relative):
+                root = self.root / relative
+                moved = Path(self.temporary.name) / f"real-{relative.strip('.')}"
+                shutil.move(str(root), moved)
+                root.symlink_to(moved)
+                self.assertTrue(any(f"{relative}: is a symlink" in e for e in check(self.root)))
+                root.unlink()
+                shutil.move(str(moved), root)
+
+    def test_only_continuity_overlaps_a_native_core_install(self) -> None:
+        from scripts.packages import resolve_selection
+        native = set(resolve_selection(self.catalog, ["astrobyte-mode", "astrobyte-workflows"]))
+        self.assertEqual(native - set(self.catalog["packages"]["astrobyte"]["skills"]), {"astrobyte-recall", "pr-feedback-loop"})
+        for package, value in self.catalog["packages"].items():
+            if package == "astrobyte":
+                continue
+            overlap = native & set(value["skills"])
+            expected = {"astrobyte-recall", "pr-feedback-loop"} if package == "astrobyte-continuity" else set()
+            with self.subTest(package=package):
+                self.assertEqual(overlap, expected)
+        readme = (REPO_ROOT / "README.md").read_text(encoding="utf-8")
+        self.assertIn("--skills astrobyte-mode,astrobyte-workflows", readme)
+
 if __name__ == "__main__":
     unittest.main()
