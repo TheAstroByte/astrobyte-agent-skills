@@ -122,6 +122,32 @@ class GitIdentityTests(unittest.TestCase):
         self.assertEqual(result.returncode, 2)
         self.assertIn("No Git identity configured", result.stderr)
 
+    def test_harness_aliases_resolve_to_policy_keys(self) -> None:
+        unknown = run(
+            [sys.executable, str(HELPER), "--config", str(self.config), "--harness", "codex-cli", "show"],
+            self.repository, check=False,
+        )
+        self.assertEqual(unknown.returncode, 2)
+        for alias, key in (("claude-code", "claude"), ("cursor-agent", "cursor")):
+            with self.subTest(alias=alias):
+                config = json.loads(self.config.read_text(encoding="utf-8"))
+                config["git_identity"]["agents"] = {key: {"name": "Agent Product", "email": "agent@local.invalid"}}
+                self.config.write_text(json.dumps(config), encoding="utf-8")
+                tracked = self.repository / f"{key}.txt"
+                tracked.write_text("agent change\n", encoding="utf-8")
+                run(["git", "add", tracked.name], self.repository)
+                command = [sys.executable, str(HELPER), "--config", str(self.config), "--harness", alias]
+                run([*command, "commit", "--", "-m", f"{alias} change"], self.repository)
+                audit = run([*command, "audit", "HEAD^!"], self.repository).stdout
+                self.assertIn(f"agent:{key}", audit)
+
+    def test_helper_runs_in_isolated_python_mode(self) -> None:
+        result = run(
+            [sys.executable, "-I", str(HELPER), "--config", str(self.config), "--harness", "codex", "show"],
+            self.repository,
+        )
+        self.assertIn("committer: Codex <codex@local.invalid>", result.stdout)
+
     def portable_helper(self, *arguments: str, check: bool = True, extra_env: dict[str, str] | None = None) -> subprocess.CompletedProcess[str]:
         skill = self.root / "installed-git-identity"
         if not skill.exists():

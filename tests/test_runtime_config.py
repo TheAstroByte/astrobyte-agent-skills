@@ -32,6 +32,18 @@ class RuntimeConfigTests(unittest.TestCase):
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(json.dumps(value))
 
+    def test_packaged_command_runs_in_isolated_python_mode(self) -> None:
+        for name in ("astrobyte-mode", "astrobyte-review", "astrobyte-project-startup"):
+            skill = self.root / name
+            if not skill.exists():
+                shutil.copytree(REPO_ROOT / "skills" / name, skill)
+            result = subprocess.run(
+                [sys.executable, "-I", "-B", str(skill / "scripts/runtime_config.py"), "--project", str(self.project)],
+                cwd=self.root, env={"HOME": str(self.home)}, capture_output=True, text=True,
+            )
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertEqual(json.loads(result.stdout)["preferences"]["delivery_mode"], "durable")
+
     def test_packaged_command_runs_without_source_or_config(self) -> None:
         for name in ("astrobyte-mode", "astrobyte-review", "astrobyte-project-startup"):
             skill = self.root / name

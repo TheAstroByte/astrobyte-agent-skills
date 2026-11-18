@@ -12,7 +12,14 @@ from typing import Any
 try:
     from scripts.preferences import inherited_values, validate_preferences, validate_pr_workflows
 except ModuleNotFoundError:
-    from preferences import inherited_values, validate_preferences, validate_pr_workflows
+    try:
+        from preferences import inherited_values, validate_preferences, validate_pr_workflows
+    except ModuleNotFoundError:
+        # `python3 -I` drops the script directory from sys.path; restore only that directory.
+        import sys
+
+        sys.path.insert(0, str(Path(__file__).resolve().parent))
+        from preferences import inherited_values, validate_preferences, validate_pr_workflows
 
 
 EXPLICIT_POLICY_TYPES = {
